@@ -9,9 +9,28 @@
     margin: 0 7.5px 15px;
     background-position: center;
     background-size: cover;
+    overflow: hidden;
 
     &.large {
         height: 380px;
+    }
+
+    &:hover {
+        cursor: pointer;
+
+        .content {
+            opacity: 0.9;
+        }
+
+        .background-image {
+            transform: scale(1.1);
+            transition: transform 1s cubic-bezier(0.0, 0.0, 0.58, 1);
+        }
+    }
+
+    .background-image {
+        width: 100%;
+        height: 100%;
     }
 
     .content {
@@ -22,6 +41,9 @@
         align-items: center;
         justify-content: center;
         border: 1px solid black;
+        background-color: white;
+        opacity: 0.7;
+        position: absolute;
 
         .title {
             font-weight: bold;
