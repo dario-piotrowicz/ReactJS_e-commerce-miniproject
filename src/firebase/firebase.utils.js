@@ -44,7 +44,7 @@ export const firestoreUtils = {
             });
             return docRef;
         } catch(error) {
-            console.log('error in creating user', error.message);
+            console.error('error in creating user', error.message);
             return null;
         }
     }
