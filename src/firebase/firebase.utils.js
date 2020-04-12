@@ -30,7 +30,7 @@ export const firestoreUtils = {
         const docRef = firestore.doc(`users/${userAuth.uid}`);
         const docSnap = await docRef.get();
         if(docSnap.exists){
-            docRef.get();
+            docRef.get(); // I'm calling get() in order to trigger an onSnapshot for the docRef
             return docRef;
         }
 
