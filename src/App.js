@@ -5,11 +5,11 @@ import { Route, Switch } from 'react-router-dom';
 import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
-import { auth } from './firebase/firebase.utils';
-
+import { auth, firestoreUtils } from './firebase/firebase.utils';
 
 class App extends React.Component {
   unsubscribeFromAuthStateChanged = null;
+  unsubscribeFromUserRefOnSnap = null;
 
   constructor(){
     super();
@@ -17,15 +17,38 @@ class App extends React.Component {
     this.state = { currentUser: null };
   }
 
+  updateCurrentUser = currentUser => {
+    this.setState({currentUser});
+  }
+
   componentDidMount(){
-    this.unsubscribeFromAuthStateChanged = auth.onAuthStateChanged( user => {
-      this.setState({ currentUser: user });
-    })
+    this.unsubscribeFromAuthStateChanged = auth.onAuthStateChanged(
+      async userAuth => {
+        if(!userAuth){
+          this.updateCurrentUser(null);
+          return;
+        }
+        const userRef = await firestoreUtils.createUserDoc(userAuth);
+        if(!userRef){
+          this.updateCurrentUser(null);
+          return;
+        }
+        this.unsubscribeFromUserRefOnSnap = userRef.onSnapshot( userSnap => {
+          this.updateCurrentUser({
+              id: userSnap.id,
+              ...userSnap.data()
+          });
+        });
+      }
+    );
   }
 
   componentWillUnmount(){
     if(this.unsubscribeFromAuthStateChanged)
       this.unsubscribeFromAuthStateChanged();
+
+    if(this.unsubscribeFromUserRefOnSnap)
+      this.unsubscribeFromUserRefOnSnap();
   }
 
   render(){
