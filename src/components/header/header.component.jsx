@@ -6,6 +6,7 @@ import { auth } from '../../firebase/firebase.utils';
 import { connect } from 'react-redux';
 import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
+import { selectCartHeaderDropdownHidden } from '../../redux/cart/cart.selectors';
 
 const Header = ( { currentUser, cartDropdownHidden } ) => (
     <div className="header">
@@ -37,9 +38,9 @@ const Header = ( { currentUser, cartDropdownHidden } ) => (
     </div>
 );
 
-const mapStateToProps = ( { user, cart } ) => ({
-    currentUser: user.currentUser,
-    cartDropdownHidden: cart.headerDropdownHidden
+const mapStateToProps = state => ({
+    currentUser: state.user.currentUser,
+    cartDropdownHidden: selectCartHeaderDropdownHidden(state)
 });
 
 export default connect(mapStateToProps)(Header);
