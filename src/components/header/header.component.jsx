@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 import { selectCartHeaderDropdownHidden } from '../../redux/cart/cart.selectors';
+import { selectCurrentUser } from '../../redux/user/user.selectors';
 
 const Header = ( { currentUser, cartDropdownHidden } ) => (
     <div className="header">
@@ -39,7 +40,7 @@ const Header = ( { currentUser, cartDropdownHidden } ) => (
 );
 
 const mapStateToProps = state => ({
-    currentUser: state.user.currentUser,
+    currentUser: selectCurrentUser(state),
     cartDropdownHidden: selectCartHeaderDropdownHidden(state)
 });
 
