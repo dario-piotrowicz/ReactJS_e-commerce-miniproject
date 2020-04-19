@@ -1,5 +1,7 @@
 import cartActionTypes from './cart.types';
-import { addItemToCartItems } from './cart.utils';
+import { addItemToCartItems,
+         removeItemFromCartItems,
+         clearItemFromCartItems } from './cart.utils';
 
 const initialState = {
     headerDropdownHidden: true,
@@ -7,6 +9,7 @@ const initialState = {
 };
 
 const cartReducer = (state = initialState, action ) => {
+    let items;
     switch(action.type){
         case cartActionTypes.TOGGLE_HEADER_DROPDOWN_HIDDEN:
             return {
@@ -14,7 +17,13 @@ const cartReducer = (state = initialState, action ) => {
                 headerDropdownHidden: !state.headerDropdownHidden
             };
         case cartActionTypes.ADD_ITEM:
-            const items = addItemToCartItems(state.items, action.payload);
+            items = addItemToCartItems(state.items, action.payload);
+            return { ...state, items };
+        case cartActionTypes.REMOVE_ITEM:
+            items = removeItemFromCartItems(state.items, action.payload);
+            return { ...state, items };
+        case cartActionTypes.CLEAR_ITEM:
+            items = clearItemFromCartItems(state.items, action.payload);
             return { ...state, items };
         default:
             return state;
