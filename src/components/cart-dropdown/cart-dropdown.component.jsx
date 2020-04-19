@@ -8,13 +8,19 @@ import { createStructuredSelector } from 'reselect';
 
 const CartDropdown = ({ cartItems }) => (
     <div className="cart-dropdown">
-        <div className="items-container">
-            { 
-                cartItems.map( (item) =>
-                    <CartDropdownItem key={item.id} item={item} />
-                )
-            }
-        </div>
+        {
+            cartItems.length
+            ?
+                <div className="items-container">
+                    {
+                        cartItems.map( (item) =>
+                            <CartDropdownItem key={item.id} item={item} />
+                        )
+                    }
+                </div>
+            :
+               <span className="empty-cart-message">Your cart is empty</span>
+        }
         <CustomButton>
             Go To Checkout
         </CustomButton>
