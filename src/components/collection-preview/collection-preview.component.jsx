@@ -5,13 +5,13 @@ import CollectionItem from '../collection-item/collection-item.component';
 const CollectionPreview = ({ title, items }) => (
  <div className="collection-preview">
     <h1 className="title">{title.toUpperCase()}</h1>
-        <div className="previews">
-            {
-                items.filter( (_, idx) => idx < 4 )
-                     .map( item =>
-                        <CollectionItem key={item.id} item={item}/> )
-            }
-        </div>
+    <div className="previews">
+        {
+            items.filter( (_, idx) => idx < 4 )
+                .map( item =>
+                <CollectionItem key={item.id} item={item}/> )
+        }
+    </div>
  </div>
 );
 
