@@ -1,9 +1,19 @@
 import React from 'react';
 import './collection.styles.scss';
+import { connect } from 'react-redux';
+import { selectCollection } from '../../redux/shop/shop.selectors';
 
-const CollectionPage = ({match}) => {
-    const collectionName = match.params.collectionName.toUpperCase();
-    return <h1>{collectionName} PAGE</h1>;
+const CollectionPage = ({ collection }) => {
+    const upperTitle = collection.title.toUpperCase();
+    return <h1>{upperTitle} PAGE</h1>;
 };
 
-export default CollectionPage;
+const mapStateToProps = (state, ownProps) => {
+    const collectionTitle = ownProps.match.params.collectionTitle;
+    const selectSpecificCollection = selectCollection(collectionTitle);
+    return {
+        collection: selectSpecificCollection(state)
+    };
+};
+
+export default connect(mapStateToProps)(CollectionPage);
