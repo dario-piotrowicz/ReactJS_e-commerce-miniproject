@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect';
-import { collectionTitleToId } from './shop.utils';
 
 const shopSelector = state => state.shop;
 
@@ -8,10 +7,7 @@ export const collectionsSelector = createSelector(
     shop => shop.collections
 );
 
-export const selectCollection = collectionTitle => {
-    const collectionId = collectionTitleToId(collectionTitle);
-    return createSelector(
+export const selectCollection = collectionTitle => createSelector(
         [collectionsSelector],
-        collections => collections.find( c => c.id === collectionId )
-    );
-};
+        collections => collections[collectionTitle]
+);
