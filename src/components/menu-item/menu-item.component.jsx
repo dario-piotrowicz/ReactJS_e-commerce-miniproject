@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 const MenuItem = ( { title, imageUrl, size, linkUrl,
                      history: routerHistory, match: routerMatch } ) => {
-    const redirectToItem = () => routerHistory.push( `${routerMatch.url}${linkUrl}` );
+    const redirectToItem = () => routerHistory.push( `shop${routerMatch.url}${linkUrl}` );
     return <div className={`menu-item ${size}`} onClick={redirectToItem}>
         <div className="background-image" style={ { backgroundImage: `url(${imageUrl})` } }/>
         <div className="content">
