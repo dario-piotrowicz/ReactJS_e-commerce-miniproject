@@ -1,0 +1,20 @@
+.stipe-checkout-button {
+    width: 100%;
+
+    .use-test-card-warning {
+        text-align: center;
+        margin: 40px 0 10px 0;
+        font-size: 24px;
+        color: red;
+
+        .expiration-and-cvv {
+            margin-top: 5;
+            font-size: 20px;
+        }
+    }
+
+    button {
+        float: right;
+    }
+
+}
