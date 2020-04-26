@@ -21,7 +21,7 @@ const CheckoutPage = ({cartItems, totalPrice}) => (
             )
         }
         <span className="total">Total: ${totalPrice}</span>
-        <StripeCheckoutButton total={totalPrice}/>
+        <StripeCheckoutButton price={totalPrice}/>
     </div>
 );
 
