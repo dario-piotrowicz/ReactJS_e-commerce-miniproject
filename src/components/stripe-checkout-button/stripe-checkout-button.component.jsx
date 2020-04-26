@@ -14,10 +14,13 @@ const StripeCheckoutButton = ({ price, clearCartItems }) => {
     }
 
     return <div className="stipe-checkout-button">
-        <div className="use-test-card-warning">
-            please use the following test credit card number for payment:
-            <br />
-            4242 4242 4242 4242
+        <div className={`use-test-card-warning ${ price === 0 ? 'hidden' : '' }`}>
+            <p>
+                Please use the following test credit card number for payment:
+            </p>
+            <p>
+                4242 4242 4242 4242
+            </p>
             <p className="expiration-and-cvv">
                 (Expiration can be any future date and CVV can be any 3 digit number)
             </p>
@@ -33,6 +36,7 @@ const StripeCheckoutButton = ({ price, clearCartItems }) => {
                 panelLabel='Pay Now'
                 token={onTokenHandler}
                 stripeKey={stripePublishablkey}
+                disabled={ price === 0 }
                 />
     </div>;
 };

@@ -7,14 +7,25 @@
         font-size: 24px;
         color: red;
 
+        p {
+           margin: 5px 0;
+        }
+
         .expiration-and-cvv {
-            margin-top: 5;
             font-size: 20px;
+        }
+
+        &.hidden > * {
+            display: none;
         }
     }
 
     button {
         float: right;
+
+        &:disabled {
+            cursor: not-allowed;
+        }
     }
 
 }
