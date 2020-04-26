@@ -1,14 +1,17 @@
 import React from 'react';
 import './stripe-checkout-button.styles.scss'
 import StripeCheckout from 'react-stripe-checkout';
+import { clearAllItems } from '../../redux/cart/cart.actions';
+import { connect } from 'react-redux';
 
-const onToken = token => {
-    alert('Payment Successful');
-}
-
-const StripeCheckoutButton = ({ price }) => {
+const StripeCheckoutButton = ({ price, clearCartItems }) => {
     const priceInCents =  price * 100;
     const stripePublishablkey = 'pk_test_1zuA92hpdJl6iYUrOeNkKckB005z3T4ZvH';
+
+    const onTokenHandler = token => {
+        alert('Payment Successful');
+        clearCartItems();
+    }
 
     return <div className="stipe-checkout-button">
         <div className="use-test-card-warning">
@@ -28,10 +31,14 @@ const StripeCheckoutButton = ({ price }) => {
                 description={`Your total is $${price}`}
                 amount={priceInCents}
                 panelLabel='Pay Now'
-                token={onToken}
+                token={onTokenHandler}
                 stripeKey={stripePublishablkey}
                 />
     </div>;
 };
 
-export default StripeCheckoutButton;
+const mapDispatchToProps = dispatch => ({
+    clearCartItems: () => dispatch(clearAllItems())
+});
+
+export default connect(null,mapDispatchToProps)(StripeCheckoutButton);
