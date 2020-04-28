@@ -23,6 +23,19 @@ provider.setCustomParameters( { prompt: 'select_account' } );
 
 export const signInWithGoogle = () => auth.signInWithPopup(provider);
 
+
+export const addCollectionWithDocumentsToFirestore = async (collectionName, docs) => {
+    const collectionRef = firestore.collection(collectionName);
+
+    const batch = firestore.batch();
+    docs.forEach( doc => {
+        const newDocRef = collectionRef.doc();
+        batch.set(newDocRef, doc);
+    });
+
+    return await batch.commit();
+}
+
 export const firestoreUtils = {
     createUserDoc : async (userAuth, additionalInfo) => {
         if(!userAuth) return;
