@@ -1,11 +1,15 @@
-import SHOP_DATA from './shop.data.json'; // Note: importing json files works by default with webpack >= v2.0.0
+import shopActionTypes from './shop.types';
 
 const constState = {
-    collections: SHOP_DATA
+    collections: null
 };
 
 const shopReducer = ( state = constState, action ) => {
     switch(action.type){
+        case shopActionTypes.SET_SHOP_DATA:
+            return {
+                collections: action.payload
+            }
         default:
             return state;
     }
