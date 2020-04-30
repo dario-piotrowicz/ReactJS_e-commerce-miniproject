@@ -4,8 +4,13 @@ import { connect } from 'react-redux';
 import { selectCollection } from '../../redux/shop/shop.selectors';
 import CollectionItem from '../../components/collection-item/collection-item.component';
 
-const CollectionPage = ({ collection: { title, items } }) => (
-    <div className="collection-page">
+const CollectionPage = ({ collection }) => {
+    let title = '', items = [];
+    if ( collection ){
+        title = collection.title;
+        items = collection.items;
+    }
+    return <div className="collection-page">
         <h1 className="title">{title.toUpperCase()}</h1>
         {
             <div className="items">
@@ -16,7 +21,7 @@ const CollectionPage = ({ collection: { title, items } }) => (
             </div>
         }
     </div>
-);
+};
 
 const mapStateToProps = (state, ownProps) => {
     const collectionTitle = ownProps.match.params.collectionTitle;

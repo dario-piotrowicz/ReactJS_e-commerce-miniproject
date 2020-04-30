@@ -15,5 +15,5 @@ export const selectCollectionsAsArray = createSelector(
 
 export const selectCollection = collectionTitle => createSelector(
         [selectCollections],
-        collections => collections[collectionTitle]
+        collections => collections ? collections[collectionTitle] : null
 );
