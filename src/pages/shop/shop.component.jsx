@@ -7,8 +7,14 @@ import { firestore } from '../../firebase/firebase.utils';
 import { convertBasicShopDataArrayToShopDataMap } from '../../redux/shop/shop.utils';
 import { connect } from 'react-redux';
 import { setShopData } from '../../redux/shop/shop.actions';
+import withLoading from '../../higher-order-components/with-loading/with-loading.component';
+
+const CollectionsOverviewWithLoading = withLoading(CollectionsOverview);
+const CollectionPageWithLoading = withLoading(CollectionPage);
 
 class ShopPage extends React.Component {
+    state = { loading: true };
+
     unsubscribeFromShopDataRefOnSnap = null;
 
     componentDidMount(){
@@ -22,7 +28,7 @@ class ShopPage extends React.Component {
                 );
                 const processedShopData = convertBasicShopDataArrayToShopDataMap(shopDataArray);
                 setShopData(processedShopData);
-                console.log({shopDataRef, shopDataSnap, shopDataArray, processedShopData});
+                this.setState({ loading: false });
             }
         );
     }
@@ -34,13 +40,18 @@ class ShopPage extends React.Component {
 
     render(){
      const { match } = this.props;
+     const { loading } = this.state;
      return <div className="shop-page">
                 <Route exact
                        path={`${match.path}`}
-                       component={CollectionsOverview} />
+                       render={ (props) =>
+                                    <CollectionsOverviewWithLoading
+                                    isLoading={loading} {...props}/>} />
                 <Route exact
                        path={`${match.path}/:collectionTitle`}
-                       component={CollectionPage} />
+                       render={ (props) =>
+                                    <CollectionPageWithLoading
+                                    isLoading={loading} {...props}/>} />
             </div>;
     }
 
