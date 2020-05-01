@@ -1,4 +1,33 @@
 .with-loading {
+    height: 40vh;
     display: flex;
     justify-content: center;
+    align-items: center;
+}
+
+.loading-icon {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+
+    &:after {
+        content: " ";
+        display: block;
+        width: 64px;
+        height: 64px;
+        margin: 8px;
+        border-radius: 50%;
+        border: 6px solid rgb(116, 115, 115);
+        border-color: rgb(116, 115, 115) transparent rgb(204, 204, 204) transparent;
+        animation: loading-icon 1.2s linear infinite;
+    }
+
+    @keyframes loading-icon  {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
 }
