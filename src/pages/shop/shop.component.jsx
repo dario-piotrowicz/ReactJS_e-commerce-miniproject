@@ -5,36 +5,26 @@ import { Route } from 'react-router-dom';
 import CollectionPage from '../collection/collection.component';
 import { connect } from 'react-redux';
 import { requestShopDataFromFirestore } from '../../redux/shop/shop.actions';
-import withLoading from '../../higher-order-components/with-loading/with-loading.component';
-import { createStructuredSelector } from 'reselect';
-import { selectAreCollectionsInitialized } from '../../redux/shop/shop.selectors';
+import shopDataDependent from '../../higher-order-components/shop-data-dependent/shop-data-dependent.componen';
 
-const CollectionsOverviewWithLoading = withLoading(CollectionsOverview);
-const CollectionPageWithLoading = withLoading(CollectionPage);
+const ShopDataDependentCollectionsOverview = shopDataDependent(CollectionsOverview);
+const ShopDataDependentCollectionPage = shopDataDependent(CollectionPage);
 
-const ShopPage = ({match, requestShopDataFromFirestore, collectionsAreInitialized}) => {
+const ShopPage = ({match, requestShopDataFromFirestore}) => {
     requestShopDataFromFirestore();
 
     return <div className="shop-page">
                 <Route exact
                        path={`${match.path}`}
-                       render={ (props) =>
-                                    <CollectionsOverviewWithLoading
-                                    isLoading={!collectionsAreInitialized} {...props}/>} />
+                       component={ShopDataDependentCollectionsOverview} />
                 <Route exact
                        path={`${match.path}/:collectionTitle`}
-                       render={ (props) =>
-                                    <CollectionPageWithLoading
-                                    isLoading={!collectionsAreInitialized} {...props}/>} />
+                       component={ShopDataDependentCollectionPage} />
     </div>;
 };
-
-const mapStateToProps = createStructuredSelector({
-    collectionsAreInitialized: selectAreCollectionsInitialized
-});
 
 const mapDispatchToProps = dispatch => ({
     requestShopDataFromFirestore: () => dispatch(requestShopDataFromFirestore())
 });
 
-export default connect(mapStateToProps,mapDispatchToProps)(ShopPage);
+export default connect(null,mapDispatchToProps)(ShopPage);
