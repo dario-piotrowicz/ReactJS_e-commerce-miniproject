@@ -17,3 +17,8 @@ export const selectCollection = collectionTitle => createSelector(
         [selectCollections],
         collections => collections ? collections[collectionTitle] : null
 );
+
+export const selectAreCollectionsInitialized = createSelector(
+    [selectCollections],
+    collections => !!collections
+);
