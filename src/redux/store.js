@@ -3,7 +3,7 @@ import rootReducer from './root-reducer';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
-import { requestShopDataUpdatesFromFirestore } from './shop/shop.sagas';
+import rootSaga from './root-saga';
 
 const sagaMiddleware = createSagaMiddleware();
 const middlewares = [ sagaMiddleware ];
@@ -14,6 +14,6 @@ export const store = createStore( rootReducer,
                            )
                          );
 
-sagaMiddleware.run(requestShopDataUpdatesFromFirestore);
+sagaMiddleware.run(rootSaga);
 
 export const persistor = persistStore(store);
