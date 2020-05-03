@@ -5,49 +5,17 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
-import { auth, firestoreUtils } from './firebase/firebase.utils';
 import { connect } from 'react-redux';
-import { setCurrentUser } from './redux/user/user.actions';
+import { requestUserUpdatesFromFirebase } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selectors';
 import { createStructuredSelector } from 'reselect';
 import CheckoutPage from './pages/checkout/checkout.component';
 
 class App extends React.Component {
-  unsubscribeFromAuthStateChanged = null;
-  unsubscribeFromUserRefOnSnap = null;
-
-  updateCurrentUser = currentUser => {
-    this.props.setCurrentUser(currentUser);
-  }
 
   componentDidMount(){
-    this.unsubscribeFromAuthStateChanged = auth.onAuthStateChanged(
-      async userAuth => {
-        if(!userAuth){
-          this.updateCurrentUser(null);
-          return;
-        }
-        const userRef = await firestoreUtils.createUserDoc(userAuth);
-        if(!userRef){
-          this.updateCurrentUser(null);
-          return;
-        }
-        this.unsubscribeFromUserRefOnSnap = userRef.onSnapshot( userSnap => {
-          this.updateCurrentUser({
-              id: userSnap.id,
-              ...userSnap.data()
-          });
-        });
-      }
-    );
-  }
-
-  componentWillUnmount(){
-    if(this.unsubscribeFromAuthStateChanged)
-      this.unsubscribeFromAuthStateChanged();
-
-    if(this.unsubscribeFromUserRefOnSnap)
-      this.unsubscribeFromUserRefOnSnap();
+    const { requestUserUpdatesFromFirebase } = this.props;
+    requestUserUpdatesFromFirebase();
   }
 
   render(){
@@ -75,7 +43,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))
+  requestUserUpdatesFromFirebase: () => dispatch(requestUserUpdatesFromFirebase())
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(App);
