@@ -4,14 +4,14 @@ import CollectionsOverview from '../../components/collections-overview/collectio
 import { Route } from 'react-router-dom';
 import CollectionPage from '../collection/collection.component';
 import { connect } from 'react-redux';
-import { requestShopDataFromFirestore } from '../../redux/shop/shop.actions';
+import { requestShopDataUpdatesFromFirestore } from '../../redux/shop/shop.actions';
 import shopDataDependent from '../../higher-order-components/shop-data-dependent/shop-data-dependent.componen';
 
 const ShopDataDependentCollectionsOverview = shopDataDependent(CollectionsOverview);
 const ShopDataDependentCollectionPage = shopDataDependent(CollectionPage);
 
-const ShopPage = ({match, requestShopDataFromFirestore}) => {
-    requestShopDataFromFirestore();
+const ShopPage = ({match, requestShopDataUpdatesFromFirestore}) => {
+    requestShopDataUpdatesFromFirestore();
 
     return <div className="shop-page">
                 <Route exact
@@ -24,7 +24,7 @@ const ShopPage = ({match, requestShopDataFromFirestore}) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-    requestShopDataFromFirestore: () => dispatch(requestShopDataFromFirestore())
+    requestShopDataUpdatesFromFirestore: () => dispatch(requestShopDataUpdatesFromFirestore())
 });
 
 export default connect(null,mapDispatchToProps)(ShopPage);
