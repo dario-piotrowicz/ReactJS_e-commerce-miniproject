@@ -46,6 +46,11 @@ export function* requestUserFromFirebase(){
     });
 }
 
+export function* signOut(){
+    yield take(userActionTypes.SIGN_OUT);
+    yield auth.signOut();
+}
+
 export default function* userSagas() {
-    yield all([call(requestUserFromFirebase)]);
+    yield all([call(requestUserFromFirebase),call(signOut)]);
 }
