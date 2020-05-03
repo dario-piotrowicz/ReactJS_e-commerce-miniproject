@@ -25,7 +25,7 @@ const getShopDataEventChannel = () => {
 };
 
 
-export function* requestShopDataUpdatesFromFirestore(){
+function* requestShopDataUpdatesFromFirestore(){
     yield take(shopActionTypes.REQUEST_SHOP_DATA_UPDATES_FROM_FIRESTORE);
     const shopDataEventChannel = yield call(getShopDataEventChannel);
     yield takeEvery(shopDataEventChannel, function* (action){
