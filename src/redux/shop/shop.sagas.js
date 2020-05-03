@@ -1,4 +1,4 @@
-import { take, takeEvery, call, put } from 'redux-saga/effects';
+import { take, takeEvery, call, put, all } from 'redux-saga/effects';
 import { eventChannel} from 'redux-saga';
 import { firestore } from '../../firebase/firebase.utils';
 import { convertBasicShopDataArrayToShopDataMap } from './shop.utils';
@@ -33,3 +33,6 @@ export function* requestShopDataUpdatesFromFirestore(){
     });
 }
 
+export default function* shopSagas() {
+    yield all([call(requestShopDataUpdatesFromFirestore)]);
+}
