@@ -6,11 +6,7 @@ import { connect } from 'react-redux';
 import { signIn } from '../../redux/user/user.actions';
 
 class SignIn extends React.Component {
-    constructor(props){
-        super(props);
-
-        this.state = { email: '', password: '' };
-    }
+    state = { email: '', password: '' };
 
     submitEventHandler = async event => {
         event.preventDefault();
@@ -44,8 +40,14 @@ class SignIn extends React.Component {
                            onChange={this.inputChangeEventHandler}
                            required />
                 <div className="buttons-container">
-                    <CustomButton type="submit">Sign In</CustomButton>
-                    <CustomButton type="button" onClick={() => signIn({ withGoogle: true })} isGoogleSignIn>Sign In with Google</CustomButton>
+                    <CustomButton type="submit">
+                        Sign In
+                    </CustomButton>
+                    <CustomButton type="button"
+                                  isGoogleSignIn
+                                  onClick={() => signIn({ withGoogle: true })}>
+                        Sign In with Google
+                    </CustomButton>
                 </div>
             </form>
         </div>;
