@@ -9,6 +9,11 @@ export const setCurrentUser = user => ({
     payload: user
 });
 
+export const signIn = options => ({
+    type: userActionTypes.SIGN_IN,
+    payload: options
+});
+
 export const signOut = () => ({
     type: userActionTypes.SIGN_OUT
 });

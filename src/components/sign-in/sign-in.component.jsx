@@ -2,7 +2,8 @@ import React from 'react';
 import './sign-in.styles.scss';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../../components/custom-button/custom-button.component';
-import { auth, signInWithGoogle } from '../../firebase/firebase.utils';
+import { connect } from 'react-redux';
+import { signIn } from '../../redux/user/user.actions';
 
 class SignIn extends React.Component {
     constructor(props){
@@ -13,15 +14,10 @@ class SignIn extends React.Component {
 
     submitEventHandler = async event => {
         event.preventDefault();
+        const { signIn } = this.props;
         const { email, password } = this.state;
-        try {
-            await auth.signInWithEmailAndPassword(email, password);
-            this.setState({ email: '', password: '' });
-        } catch(error) {
-            console.error(error);
-            if(error.code === 'auth/user-not-found') alert('Error, invalid user');
-            if(error.code === 'auth/wrong-password') alert('Error, invalid password');
-        }
+        signIn({ withEmailAndPassword: { email, password } });
+        this.setState({ email: '', password: '' });
     }
 
     inputChangeEventHandler = event => {
@@ -30,6 +26,7 @@ class SignIn extends React.Component {
     }
 
     render(){
+        const { signIn } = this.props;
         return <div className="sign-in">
             <h2 className="title">I already have an account</h2>
             <span>Sign in with your email and password</span>
@@ -47,12 +44,16 @@ class SignIn extends React.Component {
                            onChange={this.inputChangeEventHandler}
                            required />
                 <div className="buttons-container">
-                    <CustomButton type="submit"> Sign In </CustomButton>
-                    <CustomButton type="button" onClick={signInWithGoogle} isGoogleSignIn> Sign In with Google </CustomButton>
+                    <CustomButton type="submit">Sign In</CustomButton>
+                    <CustomButton type="button" onClick={() => signIn({ withGoogle: true })} isGoogleSignIn>Sign In with Google</CustomButton>
                 </div>
             </form>
         </div>;
     }
 }
 
-export default SignIn;
+const mapDispatchToProps = dispatch => ({
+    signIn: signInOptions => dispatch(signIn(signInOptions))
+});
+
+export default connect(null,mapDispatchToProps)(SignIn);
