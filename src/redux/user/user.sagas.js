@@ -20,6 +20,7 @@ const getUserEventChannel = () => {
                 emit(setCurrentUser(null));
                 return;
             }
+            if(unsubscribeFromUserRefOnSnap) unsubscribeFromUserRefOnSnap();
             unsubscribeFromUserRefOnSnap = userRef.onSnapshot( userSnap => {
                 emit( setCurrentUser({
                     id: userSnap.id,
