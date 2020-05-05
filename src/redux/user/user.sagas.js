@@ -7,37 +7,39 @@ import { setCurrentUser } from './user.actions';
 let unsubscribeFromOnAuthStateChanged = null;
 let unsubscribeFromUserRefOnSnap = null;
 
-const getUserEventChannel = () => {
-    const userDataEventChannel = eventChannel(emit => {
-        unsubscribeFromOnAuthStateChanged = auth.onAuthStateChanged(
-        async userAuth => {
-            if(!userAuth){
-                emit(setCurrentUser(null));
-                return;
-            }
-            const userRef = await firestoreUtils.createUserDoc(userAuth);
-            if(!userRef){
-                emit(setCurrentUser(null));
-                return;
-            }
-            if(unsubscribeFromUserRefOnSnap) unsubscribeFromUserRefOnSnap();
-            unsubscribeFromUserRefOnSnap = userRef.onSnapshot( userSnap => {
-                emit( setCurrentUser({
-                    id: userSnap.id,
-                    ...userSnap.data()
-                }));
-            });
+const createUserAndSubscripeToSnapshot = async (userAuth, emit) => {
+    const userRef = await firestoreUtils.createUserDoc(userAuth);
+    if(!userRef){
+        emit(setCurrentUser(null));
+    } else {
+        if(unsubscribeFromUserRefOnSnap) unsubscribeFromUserRefOnSnap();
+        unsubscribeFromUserRefOnSnap = userRef.onSnapshot( userSnap => {
+            emit( setCurrentUser({
+                id: userSnap.id,
+                ...userSnap.data()
+            }));
         });
+    }
+}
 
-        const unsubscribe = () => {
+const getUserEventChannel = () => (
+    eventChannel( emit => {
+        unsubscribeFromOnAuthStateChanged = auth.onAuthStateChanged(
+            async userAuth => {
+                if(!userAuth){
+                    emit(setCurrentUser(null));
+                } else {
+                    createUserAndSubscripeToSnapshot(userAuth, emit);
+                }
+            }
+        );
+
+        return () => {
             if(unsubscribeFromOnAuthStateChanged) unsubscribeFromOnAuthStateChanged();
             if(unsubscribeFromUserRefOnSnap) unsubscribeFromUserRefOnSnap();
         };
-        return unsubscribe;
-    });
-
-    return userDataEventChannel;
-}
+    })
+)
 
 export function* requestUserFromFirebase(){
     yield take(userActionTypes.REQUEST_USER_UPDATES_FROM_FIREBASE);
