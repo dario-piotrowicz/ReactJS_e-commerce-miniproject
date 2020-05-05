@@ -1,5 +1,5 @@
 import { take, takeEvery, call, put, all } from 'redux-saga/effects';
-import { eventChannel} from 'redux-saga';
+import { eventChannel } from 'redux-saga';
 import { firestore } from '../../firebase/firebase.utils';
 import { convertBasicShopDataArrayToShopDataMap } from './shop.utils';
 import { setShopData } from './shop.actions';
