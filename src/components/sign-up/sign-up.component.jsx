@@ -7,24 +7,17 @@ import { connect } from 'react-redux';
 
 class SignUp extends React.Component {
 
-    constructor(props){
-        super(props);
-
-        this.state = {
-            displayName: '',
-            email: '',
-            password: '',
-            confirmPassword: ''
-        };
-    }
+    state = {
+        displayName: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+    };
 
     submitEventHandler = async event => {
         event.preventDefault();
-
         const { signUp } = this.props;
-        const { displayName, email, password, confirmPassword } = this.state;
-
-        signUp({ displayName, email, password, confirmPassword });
+        signUp(this.state);
     }
 
     inputChangeEventHandler = event => {
