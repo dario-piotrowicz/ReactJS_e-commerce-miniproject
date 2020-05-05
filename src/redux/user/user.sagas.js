@@ -77,6 +77,27 @@ export function* signIn(){
     yield takeEvery(userActionTypes.SIGN_IN, handleSignInAction);
 }
 
+function* handleSignUpAction({ payload }){
+    const { displayName, email, password, confirmPassword } = payload;
+
+    if( password !== confirmPassword ){
+        alert("Passwords Don't match");
+        return;
+    }
+
+    try {
+        const userCreationResponse = yield auth.createUserWithEmailAndPassword(email,password);
+        const userAuth = userCreationResponse.user;
+        yield firestoreUtils.createUserDoc(userAuth, {displayName});
+    } catch(error) {
+        console.error(error);
+    }
+}
+
+export function* signUp(){
+    yield takeEvery(userActionTypes.SIGN_UP, handleSignUpAction);
+}
+
 export default function* userSagas(){
-    yield all([call(requestUserFromFirebase),call(signIn),call(signOut)]);
+    yield all([call(requestUserFromFirebase),call(signIn),call(signOut),call(signUp)]);
 }
