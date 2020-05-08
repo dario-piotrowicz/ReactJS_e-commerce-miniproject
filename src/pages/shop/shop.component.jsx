@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './shop.styles.scss';
 import CollectionsOverview from '../../components/collections-overview/collections-overview.component';
 import { Route } from 'react-router-dom';
@@ -10,25 +10,21 @@ import shopDataDependent from '../../higher-order-components/shop-data-dependent
 const ShopDataDependentCollectionsOverview = shopDataDependent(CollectionsOverview);
 const ShopDataDependentCollectionPage = shopDataDependent(CollectionPage);
 
-class ShopPage extends React.Component {
-    componentDidMount(){
-       const { requestShopDataUpdatesFromFirestore } = this.props;
-       requestShopDataUpdatesFromFirestore();
-    }
+const ShopPage = ({ match, requestShopDataUpdatesFromFirestore }) => {
 
-    render(){
-        const { match } = this.props;
+    useEffect( () => {
+        requestShopDataUpdatesFromFirestore();
+    },[requestShopDataUpdatesFromFirestore]);
 
-        return <div className="shop-page">
-                    <Route exact
-                        path={`${match.path}`}
-                        component={ShopDataDependentCollectionsOverview} />
-                    <Route exact
-                        path={`${match.path}/:collectionTitle`}
-                        component={ShopDataDependentCollectionPage} />
-        </div>;
-    };
-}
+    return <div className="shop-page">
+                <Route exact
+                    path={`${match.path}`}
+                    component={ShopDataDependentCollectionsOverview} />
+                <Route exact
+                    path={`${match.path}/:collectionTitle`}
+                    component={ShopDataDependentCollectionPage} />
+    </div>;
+};
 
 const mapDispatchToProps = dispatch => ({
     requestShopDataUpdatesFromFirestore: () => dispatch(requestShopDataUpdatesFromFirestore())
