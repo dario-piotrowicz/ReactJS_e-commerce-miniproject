@@ -1,65 +1,70 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './sign-up.styles.scss'
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 import { signUp } from '../../redux/user/user.actions';
 import { connect } from 'react-redux';
 
-class SignUp extends React.Component {
+const SignUp = ({ signUp }) => {
 
-    state = {
+    const [
+        userCredentials,
+        setUserCredentials
+    ] = useState({
         displayName: '',
         email: '',
         password: '',
         confirmPassword: ''
+    });
+
+    const { displayName,
+            email,
+            password,
+            confirmPassword
+    } = userCredentials;
+
+    const submitEventHandler = async event => {
+        event.preventDefault();
+        signUp(userCredentials);
     };
 
-    submitEventHandler = async event => {
-        event.preventDefault();
-        const { signUp } = this.props;
-        signUp(this.state);
-    }
-
-    inputChangeEventHandler = event => {
+    const inputChangeEventHandler = event => {
         const { name , value } = event.target;
-        this.setState({ [name]: value });
-    }
+        setUserCredentials({ ...userCredentials, [name]: value });
+    };
 
-    render(){
-        const { displayName, email, password, confirmPassword } = this.state;
-        return <div className="sign-up">
+    return <div className="sign-up">
             <h2 className="title">I do not have an account</h2>
             <span>Sign up with your email and password</span>
-            <form onSubmit={this.submitEventHandler}>
+            <form onSubmit={submitEventHandler}>
                 <FormInput type="text"
                            name="displayName"
                            value={displayName}
-                           onChange={this.inputChangeEventHandler}
+                           onChange={inputChangeEventHandler}
                            label="Display Name"
                            required />
                 <FormInput type="email"
                            name="email"
                            value={email}
-                           onChange={this.inputChangeEventHandler}
+                           onChange={inputChangeEventHandler}
                            label="Email"
                            required />
                 <FormInput type="password"
                            name="password"
                            value={password}
-                           onChange={this.inputChangeEventHandler}
+                           onChange={inputChangeEventHandler}
                            label="Password"
                            required />
                 <FormInput type="password"
                            name="confirmPassword"
                            value={confirmPassword}
-                           onChange={this.inputChangeEventHandler}
+                           onChange={inputChangeEventHandler}
                            label="Confirm Password"
                            required />
                 <CustomButton type="submit">Sign Up</CustomButton>
             </form>
         </div>;
-    }
-}
+};
 
 const mapDispatchToProps = dispatch => ({
     signUp: signUpData => dispatch(signUp(signUpData))
