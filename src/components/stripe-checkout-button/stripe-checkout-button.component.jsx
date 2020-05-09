@@ -26,10 +26,11 @@ const StripeCheckoutButton = ({ price, clearCartItems }) => {
             alert('Payment Successful!');
             clearCartItems();
         } catch( error ){
-            if(error.response.status === 404 ){
+            const errorResponse = error && error.response ? error.response : {};
+            if(errorResponse.status === 404 ){
                 alert('Error: Backend not found');
             } else {
-                const stripeErrorData = error.response.data;
+                const stripeErrorData = errorResponse.data;
                 const stripeErrorCode = stripeErrorData ? stripeErrorData.code : null;
                 switch(stripeErrorCode){
                     case 'card_declined':
