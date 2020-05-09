@@ -5,6 +5,9 @@ import { clearAllItems } from '../../redux/cart/cart.actions';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
+const stripePaymentUrl = process.env.NODE_ENV === 'production' ?
+                            'https://ecomm-miniproject-backend.herokuapp.com/stripe-payment'
+                            : '/stripe-payment';
 const stripeCurrency = 'USD';
 
 const StripeCheckoutButton = ({ price, clearCartItems }) => {
@@ -14,7 +17,7 @@ const StripeCheckoutButton = ({ price, clearCartItems }) => {
     const onTokenHandler = async token => {
         try {
             await axios({
-                url: 'stripe-payment',
+                url: stripePaymentUrl,
                 method: 'post',
                 data: {
                     amount: priceInCents,
