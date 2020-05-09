@@ -52,23 +52,22 @@ const StripeCheckoutButton = ({ price, clearCartItems }) => {
                 4242 4242 4242 4242
             </p>
             <p className="expiration-and-cvv">
-                (Expiration can be any future date and CVV can be any 3 digit number)
+                (Expiration can be any future date and CVV can be any 3/4 digit number)
             </p>
         </div>
         <StripeCheckout
-                label='Pay Now'
-                name='E-Commerce Miniproject'
-                billingAddress
-                shippingAddress
-                image='https://svgshare.com/i/CUz.svg'
-                description={`Your total is $${price}`}
-                amount={priceInCents}
-                panelLabel='Pay Now'
-                token={onTokenHandler}
-                stripeKey={stripePublishablkey}
-                currency={stripeCurrency}
-                disabled={ price === 0 }
-                />
+            label='Pay Now'
+            name='E-Commerce Miniproject'
+            billingAddress
+            shippingAddress
+            image='https://svgshare.com/i/CUz.svg'
+            description={`Your total is $${price}`}
+            amount={priceInCents}
+            panelLabel='Pay Now'
+            token={onTokenHandler}
+            stripeKey={stripePublishablkey}
+            currency={stripeCurrency}
+            disabled={ price === 0 } />
     </div>;
 };
 
