@@ -17,6 +17,9 @@
 
     &.large {
         height: 380px;
+        @media only screen and (max-width: 940px){
+            height: 240px;
+        }
         @media only screen and (max-width: 800px){
             height: 200px;
         }
