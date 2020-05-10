@@ -36,6 +36,12 @@
         position: absolute;
         top: 255px;
         display: none;
+
+        @media only screen and (max-width: 800px){
+            width: 55%;
+            display: block;
+            opacity: 0.9;
+        }
     }
 
     &:hover {
@@ -47,5 +53,20 @@
            opacity: 0.75;
            display: block;
        }
+
+        @media only screen and (max-width: 800px){
+            .image {
+                opacity: unset;
+            }
+
+            .custom-button {
+                opacity: unset;
+            }
+        }
+    }
+
+
+    @media only screen and (max-width: 800px){
+        width: 35vw;
     }
 }

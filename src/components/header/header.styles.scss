@@ -4,12 +4,22 @@
     margin-bottom: 25px;
     display: flex;
     justify-content: space-between;
+
+    @media only screen and (max-width: 800px){
+        height: 60px;
+        padding: 10px;
+    }
 }
 
 .logo-container {
     height: 100%;
     width: 70px;
     padding: 25px;
+
+    @media only screen and (max-width: 800px){
+        height: 50px;
+        padding: 0;
+    }
 }
 
 .options-container {
@@ -20,5 +30,10 @@
     .option {
         padding: 10px 15px;
         cursor: pointer;
+    }
+
+    @media only screen and (max-width: 800px){
+        width: 80%;
+        justify-content: flex-end;
     }
 }
