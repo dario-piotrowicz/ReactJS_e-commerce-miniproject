@@ -4,4 +4,12 @@
     flex-direction: row;
     justify-content: space-between;
     margin: 30px auto;
+
+    @media only screen and (max-width: 930px){
+        width: 100%;
+        display: grid;
+        flex-direction: column;
+        justify-content: center;
+        row-gap: 115px;
+    }
 }
