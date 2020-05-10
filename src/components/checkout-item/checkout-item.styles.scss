@@ -35,7 +35,9 @@
             }
 
             .value {
-                margin: 0 10px;
+                @media only screen and (min-width: 801px){
+                  margin: 0 5px;
+                }
             }
         }
 
