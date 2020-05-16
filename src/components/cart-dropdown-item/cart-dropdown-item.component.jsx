@@ -11,4 +11,4 @@ const CartDropdownItem = ({ item: { imageUrl , price, name, quantity } }) => (
     </div>
 );
 
-export default CartDropdownItem;
+export default React.memo(CartDropdownItem);
