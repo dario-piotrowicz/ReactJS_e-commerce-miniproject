@@ -42,6 +42,11 @@
             display: block;
             opacity: 0.9;
         }
+
+        @media only screen and (max-width: 400px){
+            min-width: 90%;
+            padding: 0;
+        }
     }
 
     &:hover {
