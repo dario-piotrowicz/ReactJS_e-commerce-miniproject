@@ -12,6 +12,10 @@ const ShopPage = lazy( () => import('./pages/shop/shop.component') );
 const SignInAndSignUpPage = lazy( () => import('./pages/sign-in-and-sign-up/sign-in-and-sign-up.component') );
 const CheckoutPage = lazy( () => import('./pages/checkout/checkout.component') );
 
+const renderSingInIfNoCurrentUser = currentUser => (
+  currentUser ? <Redirect to='/'/> : <SignInAndSignUpPage/>
+);
+
 const App = ({ requestUserUpdatesFromFirebase, currentUser }) => {
 
   useEffect( () => {
@@ -25,11 +29,7 @@ const App = ({ requestUserUpdatesFromFirebase, currentUser }) => {
         <Switch>
           <Route exact path='/' component={Homepage} />
           <Route path='/shop' component={ShopPage} />
-          <Route exact path='/signin'
-                        render={ () => currentUser ?
-                                            <Redirect to='/'/>
-                                            : <SignInAndSignUpPage /> }
-          />
+          <Route exact path='/signin' render={() => renderSingInIfNoCurrentUser(currentUser)} />
           <Route exact path='/checkout' component={CheckoutPage} />
           <Route component={() => (<h1>404 PAGE</h1>)} />
         </Switch>
