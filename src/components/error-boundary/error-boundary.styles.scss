@@ -1,0 +1,13 @@
+.error-boundary {
+    color: rgb(82, 82, 82);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 50px;
+
+    .exclamation-mark {
+        width: 15vw;
+        min-width: 70px;
+        fill: rgb(158, 158, 158);
+    }
+}

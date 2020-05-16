@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { requestUserUpdatesFromFirebase } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selectors';
 import { createStructuredSelector } from 'reselect';
+import ErrorBoundary from './components/error-boundary/error-boundry.component';
 
 const Homepage = lazy( () => import('./pages/homepage/hompage.component') );
 const ShopPage = lazy( () => import('./pages/shop/shop.component') );
@@ -25,15 +26,17 @@ const App = ({ requestUserUpdatesFromFirebase, currentUser }) => {
   return (
     <div>
       <Header />
-      <Suspense fallback={<div/>}>
-        <Switch>
-          <Route exact path='/' component={Homepage} />
-          <Route path='/shop' component={ShopPage} />
-          <Route exact path='/signin' render={() => renderSingInIfNoCurrentUser(currentUser)} />
-          <Route exact path='/checkout' component={CheckoutPage} />
-          <Route component={() => (<h1>404 PAGE</h1>)} />
-        </Switch>
-      </Suspense>
+      <ErrorBoundary>
+        <Suspense fallback={<div/>}>
+          <Switch>
+            <Route exact path='/' component={Homepage} />
+            <Route path='/shop' component={ShopPage} />
+            <Route exact path='/signin' render={() => renderSingInIfNoCurrentUser(currentUser)} />
+            <Route exact path='/checkout' component={CheckoutPage} />
+            <Route component={() => (<h1>404 PAGE</h1>)} />
+          </Switch>
+        </Suspense>
+      </ErrorBoundary>
     </div>
   );
 };
