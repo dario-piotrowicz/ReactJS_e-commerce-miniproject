@@ -1,5 +1,5 @@
 import { take, takeEvery, call, put, all } from 'redux-saga/effects';
-import { eventChannel} from 'redux-saga';
+import { eventChannel } from 'redux-saga';
 import { auth, firestoreUtils, signInWithGoogle } from '../../firebase/firebase.utils';
 import userActionTypes from './user.types';
 import { setCurrentUser } from './user.actions';
