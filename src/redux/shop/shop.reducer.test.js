@@ -99,11 +99,11 @@ describe('Shop Reducer', () => {
         expect( shopReducerWithNoState({}) ).toEqual(initialState);
 
         expect( shopReducerWithNoState({
-            action: 'UNKOWN_ACTION'
+            type: 'UNKOWN_ACTION'
         })).toEqual(initialState);
 
         expect( shopReducerWithNoState({
-            action: 'ANOTHER_UNKOWN_ACTION',
+            type: 'ANOTHER_UNKOWN_ACTION',
             payload: "useless payload"
         })).toEqual(initialState);
     });

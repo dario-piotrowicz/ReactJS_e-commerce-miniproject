@@ -19,11 +19,11 @@ describe('User Reducer', () => {
         expect( userReducerWithNoState({}) ).toEqual(initialState);
 
         expect( userReducerWithNoState({
-            action: 'UNKOWN_ACTION'
+            type: 'UNKOWN_ACTION'
         })).toEqual(initialState);
 
         expect( userReducerWithNoState({
-            action: 'ANOTHER_UNKOWN_ACTION',
+            type: 'ANOTHER_UNKOWN_ACTION',
             payload: "useless payload"
         })).toEqual(initialState);
     });
