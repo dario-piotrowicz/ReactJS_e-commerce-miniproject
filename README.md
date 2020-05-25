@@ -23,6 +23,19 @@ The application is implemented using ReacJS, it's been created using the [Create
 - uses functional components with the new [React Hooks](https://reactjs.org/docs/hooks-intro.html) instead of class components with lifecycle methods
 - it is responsive thanks to the use of media queries and can be used as a Progressive Web App (the latter came practically out of the box thanks to Create-React-App)
 
+## Screenshots
+Follow some screenshots of the application:
+
+* HomePage: ![home page](./README_images/homePage.png "Home Page")
+
+* Shop: ![home page](./README_images/shopPage.png "Shop Page")
+
+* Checkout: ![checkout page](./README_images/checkoutPage.png "Shop Page")
+
+* Registration: ![registration page](./README_images/signInUpPage.png "Registration Page")
+
+* As a Progressive Web App: ![pwa](./README_images/PWA.png "Progressive Web App")
+
 ## Deployment
 The application is deployed on the [Heroku](https://www.heroku.com/) platfrom and can be accessed via the following link:\
 [ecomm-miniprojeect.herokuapp.com](https://ecomm-miniproject.herokuapp.com/).
