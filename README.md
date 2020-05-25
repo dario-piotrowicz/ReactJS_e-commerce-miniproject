@@ -24,7 +24,7 @@ The application is implemented using ReacJS, it's been created using the [Create
 - it is responsive thanks to the use of media queries and can be used as a Progressive Web App (the latter came practically out of the box thanks to Create-React-App)
 
 ## Deployment
-The application is deployed on the heroku platfrom and can be accessed via the following link:\
+The application is deployed on the [Heroku](https://www.heroku.com/) platfrom and can be accessed via the following link:\
 [ecomm-miniprojeect.herokuapp.com](https://ecomm-miniproject.herokuapp.com/).
 
 
