@@ -2,7 +2,7 @@
 
 ## What this project is
 
-This is a project written in ReactJS simulating an e-commerce cloths shop that I coded along the following Udemy course: \
+This is a project written in ReactJS simulating an e-commerce clothes shop that I coded along the following Udemy course: \
 [Complete React Developer in 2020 (w/ Redux, Hooks, GraphQL) By Andrei Neagoie and Yihua Zhang](https://www.udemy.com/course/complete-react-developer-zero-to-mastery/).
 
 Though I did code along the instructor, all the code written is entirely mine (no copy and paste!) and I often made my own decisions (most noticiably I aborred the CSS in JS topic which I listened to but refused to implemented my project, or the alternative implementation I did for the Redux Sagas).\
