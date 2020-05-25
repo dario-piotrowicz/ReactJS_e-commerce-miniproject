@@ -5,7 +5,7 @@
 This is a project written in ReactJS simulating an e-commerce clothes shop that I coded along the following Udemy course: \
 [Complete React Developer in 2020 (w/ Redux, Hooks, GraphQL) By Andrei Neagoie and Yihua Zhang](https://www.udemy.com/course/complete-react-developer-zero-to-mastery/).
 
-Though I did code along the instructor, all the code written is entirely mine (no copy and paste!) and I often made my own decisions (most noticiably I aborred the CSS in JS topic which I listened to but refused to implemented my project, or the alternative implementation I did for the Redux Sagas).\
+Though I did code along the instructor, all the code written is entirely mine (no copy and paste!) and I often made my own decisions (most noticiably I aborred the CSS in JS topic which I listened to but refused to implement in my project, or a completely alternative implementation I did for the Redux Sagas).\
 So I honestly would say that roughly 70% of the code/project can be attributed to the course's instructors and 30% of it can be attributed to my own efforts/decisions.
 \
 \
@@ -14,8 +14,8 @@ Furthermore I did and plan on doing extra personal bits of work on the project, 
 ## Overall Description/Technologies Involved
 
 The application is implemented using ReacJS, it's been created using the [Create-React-App](https://github.com/facebook/create-react-app) tool and:
-- uses the [React Router](https://github.com/ReactTraining/react-router) (Dom) to implement page's routing
-- using [Firebase](https://firebase.google.com/) it implements authentication methods and data retrival
+- uses the [React Router](https://github.com/ReactTraining/react-router) (Dom) to implement pages routing
+- uses [Firebase](https://firebase.google.com/) it implements authentication methods and data retrival
 - manages its local state using the [Redux](https://redux.js.org/) library
  (enhanced with [Redux-Saga](https://github.com/redux-saga/redux-saga))
 - processes (test) payments via the [Stripe](https://stripe.com/gb) plaftorm \
