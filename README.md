@@ -26,15 +26,30 @@ The application is implemented using ReacJS, it's been created using the [Create
 ## Screenshots
 Follow some screenshots of the application:
 
-* HomePage: ![home page](./README_images/homePage.png "Home Page")
+* HomePage:
+<p align="center">
+<img src="README_images/homePage.png" alt="Home Page" width="500px">
+</p>
 
-* Shop: ![home page](./README_images/shopPage.png "Shop Page")
+* Shop:
+<p align="center">
+<img src="README_images/shopPage.png" alt="Shop Page" width="500px">
+</p>
 
-* Checkout: ![checkout page](./README_images/checkoutPage.png "Shop Page")
+* Checkout: 
+<p align="center">
+<img src="README_images/checkoutPage.png" alt="Checkout Page" width="500px">
+</p>
 
-* Registration: ![registration page](./README_images/signInUpPage.png "Registration Page")
+* Registration:
+<p align="center">
+<img src="README_images/signInUpPage.png" alt="Registration Page" width="500px">
+</p>
 
-* As a Progressive Web App: ![pwa](./README_images/PWA.png "Progressive Web App")
+* As a Progressive Web App:
+<p align="center">
+<img src="README_images/PWA.png" alt="Progressive Web App" width="250px">
+</p>
 
 ## Deployment
 The application is deployed on the [Heroku](https://www.heroku.com/) platfrom and can be accessed via the following link:\
