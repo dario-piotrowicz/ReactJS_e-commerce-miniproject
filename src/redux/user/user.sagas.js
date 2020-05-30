@@ -64,6 +64,12 @@ function* handleSignUpAction({ payload }){
         yield firestoreUtils.createUserDoc(userAuth, {displayName});
     } catch(error) {
         console.error(error);
+        if(error.code === 'auth/email-already-in-use'){
+            toast.error("Error: The email is already in use by an existing user");
+        }
+        if(error.code === 'auth/weak-password' ){
+            toast.error("Error: The password should contain at least 6 characters");
+        }
     }
 }
 
@@ -83,6 +89,9 @@ function* handleSignInAction({ payload: options }){
             }
             if(error.code === 'auth/wrong-password'){
                 toast.error("Error: The provided password is not valid");
+            }
+            if(error.code === "auth/too-many-requests"){
+                toast.error("Error: too many unsuccessful login attempts. Please try again later");
             }
         }
         return;
