@@ -4,6 +4,7 @@ import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 import { signUp } from '../../redux/user/user.actions';
 import { connect } from 'react-redux';
+import { toastAutoCloseMillis } from '../../common/constants';
 
 const SignUp = ({ signUp }) => {
 
@@ -23,9 +24,18 @@ const SignUp = ({ signUp }) => {
             confirmPassword
     } = userCredentials;
 
+    let submissionEnabled = true;
+
     const submitEventHandler = async event => {
         event.preventDefault();
-        signUp(userCredentials);
+        if( submissionEnabled ){
+            signUp(userCredentials);
+            submissionEnabled = false;
+            setTimeout(
+                () => { submissionEnabled = true },
+                toastAutoCloseMillis
+            );
+        }
     };
 
     const inputChangeEventHandler = event => {

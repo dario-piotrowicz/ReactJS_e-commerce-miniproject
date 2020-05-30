@@ -3,6 +3,7 @@ import { eventChannel} from 'redux-saga';
 import { auth, firestoreUtils, signInWithGoogle } from '../../firebase/firebase.utils';
 import userActionTypes from './user.types';
 import { setCurrentUser } from './user.actions';
+import { toast } from 'react-toastify';
 
 let unsubscribeFromOnAuthStateChanged = null;
 let unsubscribeFromUserRefOnSnap = null;
@@ -53,7 +54,7 @@ function* handleSignUpAction({ payload }){
     const { displayName, email, password, confirmPassword } = payload;
 
     if( password !== confirmPassword ){
-        alert("Passwords Don't match");
+        toast.error("Error: The provided passwords don't match");
         return;
     }
 
@@ -77,8 +78,12 @@ function* handleSignInAction({ payload: options }){
             yield auth.signInWithEmailAndPassword(email, password);
         } catch(error) {
             console.error(error);
-            if(error.code === 'auth/user-not-found') alert('Error, invalid user');
-            if(error.code === 'auth/wrong-password') alert('Error, invalid password');
+            if(error.code === 'auth/user-not-found'){
+                toast.error("Error: The provided user is not valid");
+            }
+            if(error.code === 'auth/wrong-password'){
+                toast.error("Error: The provided password is not valid");
+            }
         }
         return;
     }
