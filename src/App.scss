@@ -6,6 +6,24 @@ body {
     @media only screen and (max-width: 800px){
         padding: 10px;
     }
+
+    .Toastify .Toastify__toast-container {
+        user-select: none;
+
+        .Toastify__toast-body {
+            text-align: center;
+            font-size: 22px;
+            padding: 7px;
+        }
+
+        button.Toastify__close-button {
+            display: none;
+        }
+
+        * {
+            cursor: default;
+        }
+    }
 }
 
 a {
