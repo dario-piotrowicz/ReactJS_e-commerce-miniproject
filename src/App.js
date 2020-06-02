@@ -8,6 +8,9 @@ import { selectCurrentUser } from './redux/user/user.selectors';
 import { createStructuredSelector } from 'reselect';
 import ErrorBoundary from './components/error-boundary/error-boundry.component';
 import { withRouter } from 'react-router-dom';
+import { ToastContainer, Flip } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { toastAutoCloseMillis } from './common/constants';
 
 const Homepage = lazy( () => import('./pages/homepage/hompage.component') );
 const ShopPage = lazy( () => import('./pages/shop/shop.component') );
@@ -33,6 +36,18 @@ const App = ({ history, requestUserUpdatesFromFirebase, currentUser }) => {
 
   return (
     <div>
+    <ToastContainer
+      position="top-center"
+      newestOnTop
+      closeOnClick={false}
+      pauseOnFocusLoss={false}
+      draggable={false}
+      transition={Flip}
+      pauseOnHover={false}
+      autoClose={toastAutoCloseMillis}
+      hideProgressBar={true}
+      limit={5}
+      />
       <Header />
       <ErrorBoundary>
         <Suspense fallback={<div/>}>

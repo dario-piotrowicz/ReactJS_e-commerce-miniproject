@@ -3,6 +3,33 @@ import { eventChannel } from 'redux-saga';
 import { auth, firestoreUtils, signInWithGoogle } from '../../firebase/firebase.utils';
 import userActionTypes from './user.types';
 import { setCurrentUser } from './user.actions';
+import { toast } from 'react-toastify';
+
+const showToastError = errorCode => {
+    switch(errorCode){
+        case 'passwords-dont-match':
+            toast.error("Error: The provided passwords don't match");
+            break;
+            case 'auth/email-already-in-use':
+                toast.error("Error: The email is already in use by an existing user");
+                break;
+                case 'auth/weak-password' :
+                    toast.error("Error: The password should contain at least 6 characters");
+                    break;
+                    case 'auth/user-not-found':
+            toast.error("Error: The provided user is not valid");
+            break;
+            case 'auth/wrong-password':
+                toast.error("Error: The provided password is not valid");
+            break;
+            case "auth/too-many-requests":
+            toast.error("Error: too many unsuccessful login attempts. Please try again later");
+            break;
+            default:
+            toast.error('An error has occurred and the request has failed. Please try again later');
+            break;
+        }
+}
 
 let unsubscribeFromOnAuthStateChanged = null;
 let unsubscribeFromUserRefOnSnap = null;
@@ -53,7 +80,7 @@ function* handleSignUpAction({ payload }){
     const { displayName, email, password, confirmPassword } = payload;
 
     if( password !== confirmPassword ){
-        alert("Passwords Don't match");
+        showToastError('passwords-dont-match');
         return;
     }
 
@@ -63,6 +90,7 @@ function* handleSignUpAction({ payload }){
         yield firestoreUtils.createUserDoc(userAuth, {displayName});
     } catch(error) {
         console.error(error);
+        showToastError(error.code);
     }
 }
 
@@ -77,8 +105,7 @@ function* handleSignInAction({ payload: options }){
             yield auth.signInWithEmailAndPassword(email, password);
         } catch(error) {
             console.error(error);
-            if(error.code === 'auth/user-not-found') alert('Error, invalid user');
-            if(error.code === 'auth/wrong-password') alert('Error, invalid password');
+            showToastError(error.code);
         }
         return;
     }
