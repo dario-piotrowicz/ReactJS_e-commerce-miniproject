@@ -2,10 +2,9 @@ import React, { useEffect, lazy, Suspense } from 'react';
 import './App.scss';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Header from './components/header/header.component';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { requestUserUpdatesFromFirebase } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selectors';
-import { createStructuredSelector } from 'reselect';
 import ErrorBoundary from './components/error-boundary/error-boundry.component';
 import { useHistory } from 'react-router-dom';
 import { ToastContainer, Flip } from 'react-toastify';
@@ -21,7 +20,7 @@ const renderSingInIfNoCurrentUser = currentUser => (
   currentUser ? <Redirect to='/'/> : <SignInAndSignUpPage/>
 );
 
-const App = ({ requestUserUpdatesFromFirebase, currentUser }) => {
+const App = ({ requestUserUpdatesFromFirebase }) => {
 
   const history = useHistory();
 
@@ -35,6 +34,8 @@ const App = ({ requestUserUpdatesFromFirebase, currentUser }) => {
   useEffect( () => {
     requestUserUpdatesFromFirebase();
   },[requestUserUpdatesFromFirebase]);
+
+  const currentUser = useSelector(selectCurrentUser);
 
   return (
     <div>
@@ -66,12 +67,8 @@ const App = ({ requestUserUpdatesFromFirebase, currentUser }) => {
   );
 };
 
-const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser
-});
-
 const mapDispatchToProps = dispatch => ({
   requestUserUpdatesFromFirebase: () => dispatch(requestUserUpdatesFromFirebase())
 });
 
-export default connect(mapStateToProps,mapDispatchToProps)(App);
+export default connect(null,mapDispatchToProps)(App);
