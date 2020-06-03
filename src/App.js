@@ -2,7 +2,7 @@ import React, { useEffect, lazy, Suspense } from 'react';
 import './App.scss';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Header from './components/header/header.component';
-import { connect, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { requestUserUpdatesFromFirebase } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selectors';
 import ErrorBoundary from './components/error-boundary/error-boundry.component';
@@ -20,7 +20,7 @@ const renderSingInIfNoCurrentUser = currentUser => (
   currentUser ? <Redirect to='/'/> : <SignInAndSignUpPage/>
 );
 
-const App = ({ requestUserUpdatesFromFirebase }) => {
+const App = () => {
 
   const history = useHistory();
 
@@ -31,9 +31,10 @@ const App = ({ requestUserUpdatesFromFirebase }) => {
     return () => unlisten();
   }, [history]);
 
+  const dispatch = useDispatch();
   useEffect( () => {
-    requestUserUpdatesFromFirebase();
-  },[requestUserUpdatesFromFirebase]);
+    dispatch(requestUserUpdatesFromFirebase());
+  },[dispatch]);
 
   const currentUser = useSelector(selectCurrentUser);
 
@@ -67,8 +68,4 @@ const App = ({ requestUserUpdatesFromFirebase }) => {
   );
 };
 
-const mapDispatchToProps = dispatch => ({
-  requestUserUpdatesFromFirebase: () => dispatch(requestUserUpdatesFromFirebase())
-});
-
-export default connect(null,mapDispatchToProps)(App);
+export default App;

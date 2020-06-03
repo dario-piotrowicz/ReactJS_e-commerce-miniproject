@@ -2,16 +2,17 @@ import React from 'react';
 import './header.styles.scss';
 import { ReactComponent as Logo } from '../../assets/logo.svg';
 import { Link } from 'react-router-dom';
-import { connect, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 import { selectCartHeaderDropdownHidden } from '../../redux/cart/cart.selectors';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { signOut } from '../../redux/user/user.actions';
 
-const Header = ( { signOut } ) => {
+const Header = () => {
     const currentUser = useSelector(selectCurrentUser);
     const cartDropdownHidden = useSelector(selectCartHeaderDropdownHidden);
+    const dispatch = useDispatch();
 
     return <div className="header">
         <Link className="logo-container" to="/">
@@ -27,7 +28,7 @@ const Header = ( { signOut } ) => {
             {
                 currentUser ?
                     <div className="option"
-                         onClick={signOut}>
+                         onClick={() => dispatch(signOut())}>
                         SIGN OUT
                     </div>
                     : <Link className="option" to="/signin">
@@ -42,8 +43,5 @@ const Header = ( { signOut } ) => {
     </div>
 };
 
-const mapDispatchToProps = dispatch => ({
-    signOut: () => dispatch(signOut())
-});
 
-export default connect(null, mapDispatchToProps)(Header);
+export default Header;

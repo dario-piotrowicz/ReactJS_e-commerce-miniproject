@@ -2,7 +2,7 @@ import React from 'react';
 import './stripe-checkout-button.styles.scss'
 import StripeCheckout from 'react-stripe-checkout';
 import { clearAllItems } from '../../redux/cart/cart.actions';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 
 const stripePaymentUrl = process.env.NODE_ENV === 'production' ?
@@ -10,7 +10,10 @@ const stripePaymentUrl = process.env.NODE_ENV === 'production' ?
                             : '/stripe-payment';
 const stripeCurrency = 'USD';
 
-const StripeCheckoutButton = ({ price, clearCartItems }) => {
+const StripeCheckoutButton = ({ price }) => {
+
+    const dispatch = useDispatch();
+
     const priceInCents =  price * 100;
     const stripePublishablkey = 'pk_test_1zuA92hpdJl6iYUrOeNkKckB005z3T4ZvH';
 
@@ -27,7 +30,7 @@ const StripeCheckoutButton = ({ price, clearCartItems }) => {
             });
 
             alert('Payment Successful!');
-            clearCartItems();
+            dispatch(clearAllItems());
         } catch( error ){
             const errorResponse = error && error.response ? error.response : {};
             if(errorResponse.status === 404 ){
@@ -75,8 +78,4 @@ const StripeCheckoutButton = ({ price, clearCartItems }) => {
     </div>;
 };
 
-const mapDispatchToProps = dispatch => ({
-    clearCartItems: () => dispatch(clearAllItems())
-});
-
-export default connect(null,mapDispatchToProps)(StripeCheckoutButton);
+export default StripeCheckoutButton;

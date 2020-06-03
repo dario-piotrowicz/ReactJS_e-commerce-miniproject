@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import './sign-in.styles.scss';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../../components/custom-button/custom-button.component';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { signIn } from '../../redux/user/user.actions';
 
-const SignIn = ({ signIn }) => {
+const SignIn = () => {
 
     const [
             userCredentials,
@@ -14,9 +14,12 @@ const SignIn = ({ signIn }) => {
 
     const { email, password } = userCredentials;
 
+    const dispatch = useDispatch();
+    const dispatchSignIn = signInOptions => dispatch(signIn(signInOptions));
+
     const submitEventHandler = async event => {
         event.preventDefault();
-        signIn({ withEmailAndPassword: { email, password } });
+        dispatchSignIn({ withEmailAndPassword: { email, password } });
         setUserCrendentials({ email: '', password: '' });
     }
 
@@ -24,6 +27,7 @@ const SignIn = ({ signIn }) => {
         const { name , value } = event.target;
         setUserCrendentials({...userCredentials, [name]: value });
     }
+
 
     return <div className="sign-in">
         <h2 className="title">I already have an account</h2>
@@ -47,7 +51,7 @@ const SignIn = ({ signIn }) => {
                 </CustomButton>
                 <CustomButton type="button"
                                 isGoogleSignIn
-                                onClick={() => signIn({ withGoogle: true })}>
+                                onClick={() => dispatchSignIn({ withGoogle: true })}>
                     Sign In with Google
                 </CustomButton>
             </div>
@@ -55,8 +59,4 @@ const SignIn = ({ signIn }) => {
     </div>;
 };
 
-const mapDispatchToProps = dispatch => ({
-    signIn: signInOptions => dispatch(signIn(signInOptions))
-});
-
-export default connect(null,mapDispatchToProps)(SignIn);
+export default SignIn;
