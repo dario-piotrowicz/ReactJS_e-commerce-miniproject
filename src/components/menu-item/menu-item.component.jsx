@@ -1,10 +1,13 @@
 import React from 'react';
 import './menu-item.styles.scss';
-import { withRouter } from 'react-router-dom';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 
-const MenuItem = ( { title, imageUrl, size, linkUrl,
-                     history: routerHistory, match: routerMatch } ) => {
-    const redirectToItem = () => routerHistory.push( `${routerMatch.url}${linkUrl}` );
+const MenuItem = ( { title, imageUrl, size, linkUrl } ) => {
+    const history = useHistory();
+    const { url } = useRouteMatch();
+
+    const redirectToItem = () => history.push( `${url}${linkUrl}` );
+
     return <div className={`menu-item ${size}`} onClick={redirectToItem}>
         <div className="background-image" style={ { backgroundImage: `url(${imageUrl})` } }/>
         <div className="content">
@@ -14,4 +17,4 @@ const MenuItem = ( { title, imageUrl, size, linkUrl,
     </div>
 };
 
-export default withRouter(MenuItem);
+export default MenuItem;

@@ -3,10 +3,10 @@ import './sign-up.styles.scss'
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 import { signUp } from '../../redux/user/user.actions';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { toastAutoCloseMillis } from '../../common/constants';
 
-const SignUp = ({ signUp }) => {
+const SignUp = () => {
 
     const [
         userCredentials,
@@ -17,6 +17,9 @@ const SignUp = ({ signUp }) => {
         password: '',
         confirmPassword: ''
     });
+
+    const dispatch = useDispatch();
+    const dispatchSignUp = signUpData => dispatch(signUp(signUpData));
 
     const { displayName,
             email,
@@ -29,7 +32,7 @@ const SignUp = ({ signUp }) => {
     const submitEventHandler = async event => {
         event.preventDefault();
         if( submissionEnabled ){
-            signUp(userCredentials);
+            dispatchSignUp(userCredentials);
             submissionEnabled = false;
             setTimeout(
                 () => { submissionEnabled = true },
@@ -76,8 +79,4 @@ const SignUp = ({ signUp }) => {
         </div>;
 };
 
-const mapDispatchToProps = dispatch => ({
-    signUp: signUpData => dispatch(signUp(signUpData))
-});
-
-export default connect(null,mapDispatchToProps)(SignUp);
+export default SignUp;

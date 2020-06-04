@@ -2,12 +2,11 @@ import React, { useEffect, lazy, Suspense } from 'react';
 import './App.scss';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Header from './components/header/header.component';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { requestUserUpdatesFromFirebase } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selectors';
-import { createStructuredSelector } from 'reselect';
 import ErrorBoundary from './components/error-boundary/error-boundry.component';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { ToastContainer, Flip } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toastAutoCloseMillis } from './common/constants';
@@ -21,18 +20,23 @@ const renderSingInIfNoCurrentUser = currentUser => (
   currentUser ? <Redirect to='/'/> : <SignInAndSignUpPage/>
 );
 
-const App = ({ history, requestUserUpdatesFromFirebase, currentUser }) => {
+const App = () => {
 
-    useEffect(() => {
-      const unlisten = history.listen( () => {
-        window.scrollTo(0, 0);
-      });
-      return () => unlisten();
-    }, [history]);
+  const history = useHistory();
 
+  useEffect(() => {
+    const unlisten = history.listen( () => {
+      window.scrollTo(0, 0);
+    });
+    return () => unlisten();
+  }, [history]);
+
+  const dispatch = useDispatch();
   useEffect( () => {
-    requestUserUpdatesFromFirebase();
-  },[requestUserUpdatesFromFirebase]);
+    dispatch(requestUserUpdatesFromFirebase());
+  },[dispatch]);
+
+  const currentUser = useSelector(selectCurrentUser);
 
   return (
     <div>
@@ -64,12 +68,4 @@ const App = ({ history, requestUserUpdatesFromFirebase, currentUser }) => {
   );
 };
 
-const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser
-});
-
-const mapDispatchToProps = dispatch => ({
-  requestUserUpdatesFromFirebase: () => dispatch(requestUserUpdatesFromFirebase())
-});
-
-export default withRouter(connect(mapStateToProps,mapDispatchToProps)(App));
+export default App;
