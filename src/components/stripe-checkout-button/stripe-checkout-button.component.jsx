@@ -30,8 +30,7 @@ const StripeCheckoutButton = ({ price }) => {
                 }
             });
 
-            alert('Payment Successful!');
-            dispatch(clearAllItems());
+            toast.success('Payment Successful!');
         } catch( error ){
             const errorResponse = error && error.response ? error.response : {};
             if(errorResponse.status === 404 ){
