@@ -4,6 +4,7 @@ import StripeCheckout from 'react-stripe-checkout';
 import { clearAllItems } from '../../redux/cart/cart.actions';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const stripePaymentUrl = process.env.NODE_ENV === 'production' ?
                             'https://ecomm-miniproject-backend.herokuapp.com/stripe-payment'
@@ -34,16 +35,16 @@ const StripeCheckoutButton = ({ price }) => {
         } catch( error ){
             const errorResponse = error && error.response ? error.response : {};
             if(errorResponse.status === 404 ){
-                alert('Error: Backend not found');
+                toast.error("Error: Backend not found");
             } else {
                 const stripeErrorData = errorResponse.data;
                 const stripeErrorCode = stripeErrorData ? stripeErrorData.code : null;
                 switch(stripeErrorCode){
                     case 'card_declined':
-                        alert('Error: Wrong card provided, please use the test card provided');
+                        toast.error('Error: Wrong card provided, please use the test card provided');
                         break;
                     default:
-                        alert('Error: Payment aborted');
+                        toast.error("Error: Payment aborted");
                         break;
                 }
             }
