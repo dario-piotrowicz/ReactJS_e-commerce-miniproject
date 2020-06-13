@@ -31,6 +31,7 @@ const StripeCheckoutButton = ({ price }) => {
             });
 
             toast.success('Payment Successful!');
+            dispatch(clearAllItems());
         } catch( error ){
             const errorResponse = error && error.response ? error.response : {};
             if(errorResponse.status === 404 ){
