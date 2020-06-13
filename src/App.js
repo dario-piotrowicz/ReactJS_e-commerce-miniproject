@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 import { ToastContainer, Flip } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toastAutoCloseMillis } from './common/constants';
+import SiteLoading from './components/site-loading/site-loading.component';
 
 const Homepage = lazy( () => import('./pages/homepage/hompage.component') );
 const ShopPage = lazy( () => import('./pages/shop/shop.component') );
@@ -52,6 +53,7 @@ const App = () => {
       hideProgressBar={true}
       limit={5}
       />
+      <SiteLoading />
       <Header />
       <ErrorBoundary>
         <Suspense fallback={<div/>}>

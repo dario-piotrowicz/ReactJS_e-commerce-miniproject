@@ -2,6 +2,7 @@ import React from 'react';
 import './stripe-checkout-button.styles.scss'
 import StripeCheckout from 'react-stripe-checkout';
 import { clearAllItems } from '../../redux/cart/cart.actions';
+import { setLoading } from '../../redux/loading/loading.actions';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -20,6 +21,8 @@ const StripeCheckoutButton = ({ price }) => {
 
     const onTokenHandler = async token => {
         try {
+            dispatch(setLoading(true));
+
             await axios({
                 url: stripePaymentUrl,
                 method: 'post',
@@ -30,9 +33,11 @@ const StripeCheckoutButton = ({ price }) => {
                 }
             });
 
-            toast.success('Payment Successful!');
+            dispatch(setLoading(false));
             dispatch(clearAllItems());
+            toast.success('Payment Successful!');
         } catch( error ){
+            dispatch(setLoading(false));
             const errorResponse = error && error.response ? error.response : {};
             if(errorResponse.status === 404 ){
                 toast.error("Error: Backend not found");
