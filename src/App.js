@@ -11,6 +11,7 @@ import { ToastContainer, Flip } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toastAutoCloseMillis } from './common/constants';
 import SiteLoading from './components/site-loading/site-loading.component';
+import ContactPage from './pages/contact/contact.component';
 
 const Homepage = lazy( () => import('./pages/homepage/hompage.component') );
 const ShopPage = lazy( () => import('./pages/shop/shop.component') );
@@ -60,6 +61,7 @@ const App = () => {
           <Switch>
             <Route exact path='/' component={Homepage} />
             <Route path='/shop' component={ShopPage} />
+            <Route exact path='/contact' component={ContactPage} />
             <Route exact path='/signin' render={() => renderSingInIfNoCurrentUser(currentUser)} />
             <Route exact path='/checkout' component={CheckoutPage} />
             <Route component={() => (<h1>404 PAGE</h1>)} />
