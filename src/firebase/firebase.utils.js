@@ -62,16 +62,25 @@ export const firestoreUtils = {
         }
     },
     addMessageToDb : async (userId, title, message) => {
-        const docRef = firestore.doc(`messages/${ new Date() }_${userId}`);
+        const docId = `${ (new Date()).toISOString()}_${userId}`;
+
+        const docRef = firestore.doc(`messages/${docId}`);
         const docSnap = await docRef.get();
         if(docSnap.exists) throw new Error('message document already exists');
+
+        userId = userId.trim();
+        title = title.trim();
+        message = message.trim();
+
+        if(!userId) throw new Error('userId not provided');
+        if(!title) throw new Error('title not provided');
+        if(!message) throw new Error('message not provided');
 
         await docRef.set({
                         userId,
                         title,
                         message
         });
-        return null;
     }
 };
 

@@ -42,13 +42,15 @@ const ContactPage = () => {
                           type="test"
                           value={formData.title}
                           onChange={inputChangeEventHandler}
-                          required />
+                          required
+                          pattern=".*[\S+].*" />
               <FormInput name="message"
                         label="message"
                         type="text"
                         value={formData.message}
                         onChange={inputChangeEventHandler}
-                        required />
+                        required
+                        pattern=".*[\S+].*" />
               <div className="buttons-container">
                   <CustomButton type="submit">
                       Submit
