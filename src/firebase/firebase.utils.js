@@ -60,6 +60,18 @@ export const firestoreUtils = {
             console.error('error in creating user', error.message);
             return null;
         }
+    },
+    addMessageToDb : async (userId, title, message) => {
+        const docRef = firestore.doc(`messages/${ new Date() }_${userId}`);
+        const docSnap = await docRef.get();
+        if(docSnap.exists) throw new Error('message document already exists');
+
+        await docRef.set({
+                        userId,
+                        title,
+                        message
+        });
+        return null;
     }
 };
 

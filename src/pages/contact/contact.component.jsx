@@ -5,6 +5,7 @@ import CustomButton from '../../components/custom-button/custom-button.component
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
+import { firestoreUtils } from '../../firebase/firebase.utils';
 
 const ContactPage = () => {
   
@@ -19,8 +20,16 @@ const ContactPage = () => {
 
   const submitEventHandler = event => {
     event.preventDefault();
-    setFormData({ title: '', message: ''});
-    toast.success('Your request has been successfully submitted');
+
+    firestoreUtils.addMessageToDb( currentUser.id, formData.title, formData.message ).then(
+      () => {
+        setFormData({ title: '', message: ''});
+        toast.success('Your request has been successfully submitted');
+      }
+    ).catch( error => {
+      console.error(error);
+      toast.error('There was an error and your request could not be processed, please try again later');
+    });
   };
 
   return <div id="contact-page-container">
