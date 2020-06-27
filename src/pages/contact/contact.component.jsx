@@ -24,6 +24,7 @@ const ContactPage = () => {
     firestoreUtils.addMessageToDb( currentUser.id, formData.title, formData.message ).then(
       () => {
         setFormData({ title: '', message: ''});
+        document.getElementById("contact-form").reset();
         toast.success('Your request has been successfully submitted');
       }
     ).catch( error => {
@@ -33,10 +34,10 @@ const ContactPage = () => {
   };
 
   return <div id="contact-page-container">
-      <div className={`contact-form ${ currentUser ? '' : 'disabled' }`}>
+      <div className={`contact-form-container ${ currentUser ? '' : 'disabled' }`}>
       <h2 className="title">Contact Us</h2>
           <span>Fill out the form below to contact us</span>
-          <form onSubmit={submitEventHandler}>
+          <form id="contact-form" onSubmit={submitEventHandler}>
               <FormInput name="title"
                           label="title"
                           type="test"
