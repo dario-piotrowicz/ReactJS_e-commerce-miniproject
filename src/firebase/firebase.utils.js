@@ -63,10 +63,7 @@ export const firestoreUtils = {
     },
     addMessageToDb : async (userId, title, message) => {
         const docId = `${ (new Date()).toISOString()}_${userId}`;
-
         const docRef = firestore.doc(`messages/${docId}`);
-        const docSnap = await docRef.get();
-        if(docSnap.exists) throw new Error('message document already exists');
 
         userId = userId.trim();
         title = title.trim();
