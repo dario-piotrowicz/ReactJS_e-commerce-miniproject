@@ -16,7 +16,7 @@ const CollectionItem = ({ item }) => {
 
     const addItemToCart = () => {
         if(!currentUser){
-            toast.error('Log in to add an item to your cart');
+            toast.error('Sign in to add an item to your cart');
             setAddButtonDisabled(true);
             setTimeout( () => {
                 setAddButtonDisabled(false);
