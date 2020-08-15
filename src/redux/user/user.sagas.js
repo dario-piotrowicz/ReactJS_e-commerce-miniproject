@@ -4,7 +4,7 @@ import { auth, firestoreUtils, signInWithGoogle } from '../../firebase/firebase.
 import userActionTypes from './user.types';
 import { setCurrentUser } from './user.actions';
 import { toast } from 'react-toastify';
-import { setItemsLocally } from '../cart/cart.actions';
+import { setItemsLocally, clearAllItemsLocally } from '../cart/cart.actions';
 import { selectAreCollectionsInitialized, selectCollectionsAsArray } from '../shop/shop.selectors';
 
 const showToastError = errorCode => {
@@ -153,6 +153,8 @@ function* handleSetCurrentUserAction({payload: currentUser}){
             item => !!item || item.quantity < 0
         );
         yield put(setItemsLocally(userItems));
+    } else {
+        yield put(clearAllItemsLocally());
     }
 }
 

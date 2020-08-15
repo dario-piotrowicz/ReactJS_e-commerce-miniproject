@@ -32,3 +32,7 @@ export const setItemsLocally = itemsArray => ({
     type: cartActionTypes.SET_ITEMS_LOCALLY,
     payload: itemsArray
 })
+
+export const clearAllItemsLocally = () => ({
+    type: cartActionTypes.CLEAR_ALL_ITEMS_LOCALLY
+});
