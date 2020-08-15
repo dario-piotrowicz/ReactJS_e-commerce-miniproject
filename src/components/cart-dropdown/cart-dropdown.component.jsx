@@ -6,11 +6,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectCartItems } from '../../redux/cart/cart.selectors';
 import { useHistory } from 'react-router-dom';
 import { toggleHeaderDropdownHidden } from '../../redux/cart/cart.actions';
+import { selectCurrentUser } from '../../redux/user/user.selectors';
 
 const CartDropdown = () => {
     const history = useHistory();
     const cartItems = useSelector(selectCartItems);
     const dispatch = useDispatch();
+
+    const currentUser = useSelector(selectCurrentUser);
 
     return <div className="cart-dropdown">
         {
@@ -24,7 +27,13 @@ const CartDropdown = () => {
                     }
                 </div>
             :
+            <>
                <span className="empty-cart-message">Your cart is empty</span>
+               {
+                   currentUser ? null :
+                   <span className="empty-cart-message">Sign in to add items to your cart</span>
+               }
+            </>
         }
         <CustomButton onClick={ () => {
                                     history.push('/checkout');
