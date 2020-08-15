@@ -27,6 +27,8 @@ const cartReducer = (state = initialState, action ) => {
             return { ...state, items };
         case cartActionTypes.CLEAR_ALL_ITEMS:
             return { ...state, items: [] };
+        case cartActionTypes.SET_ITEMS_LOCALLY:
+            return { ...state, items: action.payload};
         default:
             return state;
     }

@@ -103,8 +103,17 @@ export const firestoreUtils = {
                         itemId,
                         quantity
         });
-    }
+    },
+    retrieveUserItemsFromDbCart: async (userId) => {
+        const userItems = [];
+        const querySnap = await firestore.collection('cartItems').where("userId", "==", userId).get();
 
+        querySnap.forEach(function(doc) {
+            userItems.push(doc.data());
+        });
+
+        return userItems;
+    }
 };
 
 export default firebase;
