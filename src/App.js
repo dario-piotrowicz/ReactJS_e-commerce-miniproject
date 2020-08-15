@@ -22,6 +22,10 @@ const renderSingInIfNoCurrentUser = currentUser => (
   currentUser ? <Redirect to='/'/> : <SignInAndSignUpPage/>
 );
 
+const renderCheckoutIfCurrentUser = currentUser => (
+  !currentUser ? <Redirect to='/'/> : <CheckoutPage/>
+);
+
 const App = () => {
 
   const history = useHistory();
@@ -63,7 +67,7 @@ const App = () => {
             <Route path='/shop' component={ShopPage} />
             <Route exact path='/contact' component={ContactPage} />
             <Route exact path='/signin' render={() => renderSingInIfNoCurrentUser(currentUser)} />
-            <Route exact path='/checkout' component={CheckoutPage} />
+            <Route exact path='/checkout' render={() => renderCheckoutIfCurrentUser(currentUser)} />
             <Route component={() => (<h1>404 PAGE</h1>)} />
           </Switch>
         </Suspense>
