@@ -78,7 +78,33 @@ export const firestoreUtils = {
                         title,
                         message
         });
+    },
+    addItemToDbCart: async (userId, itemId) => {
+        const docId = `${userId}_${itemId}`;
+        const docRef = firestore.doc(`cartItems/${docId}`);
+
+        userId = userId.trim();
+
+        if(!userId) throw new Error('userId not provided');
+        if(!itemId) throw new Error('itemId not provided');
+
+        let currentQuantity = 0;
+
+        const docSnap = await docRef.get();
+        if(docSnap.exists){
+            const docData = docSnap.data();
+            currentQuantity = parseInt(docData.quantity);
+        }
+
+        const quantity = currentQuantity + 1;
+
+        await docRef.set({
+                        userId,
+                        itemId,
+                        quantity
+        });
     }
+
 };
 
 export default firebase;

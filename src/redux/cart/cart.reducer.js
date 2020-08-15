@@ -16,7 +16,7 @@ const cartReducer = (state = initialState, action ) => {
                 ...state,
                 headerDropdownHidden: !state.headerDropdownHidden
             };
-        case cartActionTypes.ADD_ITEM:
+        case cartActionTypes.ADD_ITEM_LOCALLY:
             items = addItemToCartItems(state.items, action.payload);
             return { ...state, items };
         case cartActionTypes.REMOVE_ITEM:
