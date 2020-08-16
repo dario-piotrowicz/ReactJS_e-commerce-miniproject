@@ -1,4 +1,4 @@
-import { takeEvery, call, put, all, select } from 'redux-saga/effects';
+import { take, takeEvery, call, put, all, select } from 'redux-saga/effects';
 import { firestoreUtils } from '../../firebase/firebase.utils';
 import { addItemLocally, removeItemLocally, clearItemLocally, clearAllItemsLocally } from './cart.actions';
 import cartActionTypes from './cart.types';
@@ -6,7 +6,7 @@ import { selectCurrentUser } from '../user/user.selectors';
 import { toast } from 'react-toastify';
 
 
-function* handleAddItemAction({ payload: item }){
+function* handleAddItemAction(item){
   const currentUser = yield select(selectCurrentUser);
 
   try {
@@ -20,7 +20,7 @@ function* handleAddItemAction({ payload: item }){
 }
 
 
-function* handleRemoveItemAction({ payload: item }){
+function* handleRemoveItemAction(item){
   const currentUser = yield select(selectCurrentUser);
 
   try {
@@ -61,11 +61,17 @@ function* handleClearAllItemsAction(){
 }
 
 export function* addItem(){
-  yield takeEvery(cartActionTypes.ADD_ITEM, handleAddItemAction);
+  while( true ){
+    const { payload } = yield take(cartActionTypes.ADD_ITEM);
+    yield handleAddItemAction(payload);
+  }
 }
 
 export function* removeItem(){
-  yield takeEvery(cartActionTypes.REMOVE_ITEM, handleRemoveItemAction);
+  while( true ){
+   const { payload } = yield take(cartActionTypes.REMOVE_ITEM);
+   yield handleRemoveItemAction(payload);
+  }
 }
 
 export function* clearItem(){
