@@ -100,8 +100,10 @@ export const firestoreUtils = {
 
         let currentQuantity = 0;
 
-        const docSnap = await docRef.get();
-        if(docSnap.exists){
+        let docSnap = null;
+        try{ docSnap = await docRef.get(); }catch(error){docSnap = null;}
+
+        if(docSnap && docSnap.exists){
             const docData = docSnap.data();
             currentQuantity = parseInt(docData.quantity);
         }
