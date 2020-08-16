@@ -79,6 +79,16 @@ export const firestoreUtils = {
                         message
         });
     },
+    retrieveUserItemsFromDbCart: async (userId) => {
+        const userItems = [];
+        const querySnap = await firestore.collection('cartItems').where("userId", "==", userId).get();
+
+        querySnap.forEach(function(doc) {
+            userItems.push(doc.data());
+        });
+
+        return userItems;
+    },
     addItemToDbCart: async (userId, itemId) => {
         const docId = `${userId}_${itemId}`;
         const docRef = firestore.doc(`cartItems/${docId}`);
@@ -104,16 +114,34 @@ export const firestoreUtils = {
                         quantity
         });
     },
-    retrieveUserItemsFromDbCart: async (userId) => {
-        const userItems = [];
-        const querySnap = await firestore.collection('cartItems').where("userId", "==", userId).get();
+    removeItemFromDbCart: async (userId, itemId) => {
+        const docId = `${userId}_${itemId}`;
+        const docRef = firestore.doc(`cartItems/${docId}`);
 
-        querySnap.forEach(function(doc) {
-            userItems.push(doc.data());
-        });
+        userId = userId.trim();
 
-        return userItems;
-    }
+        if(!userId) throw new Error('userId not provided');
+        if(!itemId) throw new Error('itemId not provided');
+
+        const docSnap = await docRef.get();
+
+        if(!docSnap.exists) throw new Error('could not find item to remove in firestore');
+
+        const docData = docSnap.data();
+        const currentQuantity = parseInt(docData.quantity);
+
+        const quantity = currentQuantity - 1;
+
+        if(quantity===0){
+            docRef.delete();
+        } else {
+            await docRef.set({
+                            userId,
+                            itemId,
+                            quantity
+            });
+        }
+    },
 };
 
 export default firebase;

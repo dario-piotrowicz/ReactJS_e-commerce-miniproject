@@ -19,6 +19,11 @@ export const removeItem = item => ({
     payload: item
 });
 
+export const removeItemLocally = item => ({
+    type: cartActionTypes.REMOVE_ITEM_LOCALLY,
+    payload: item
+});
+
 export const clearItem = item => ({
     type: cartActionTypes.CLEAR_ITEM,
     payload: item

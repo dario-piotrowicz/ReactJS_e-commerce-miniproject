@@ -19,7 +19,7 @@ const cartReducer = (state = initialState, action ) => {
         case cartActionTypes.ADD_ITEM_LOCALLY:
             items = addItemToCartItems(state.items, action.payload);
             return { ...state, items };
-        case cartActionTypes.REMOVE_ITEM:
+        case cartActionTypes.REMOVE_ITEM_LOCALLY:
             items = removeItemFromCartItems(state.items, action.payload);
             return { ...state, items };
         case cartActionTypes.CLEAR_ITEM:
