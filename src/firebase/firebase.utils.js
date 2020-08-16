@@ -157,6 +157,13 @@ export const firestoreUtils = {
 
         docRef.delete();
     },
+    clearAllItemsFromDbCart: async (userId) => {
+        const querySnap = await firestore.collection('cartItems').where("userId", "==", userId).get();
+
+        querySnap.forEach(function(doc) {
+            doc.ref.delete();
+        });
+    },
 };
 
 export default firebase;
