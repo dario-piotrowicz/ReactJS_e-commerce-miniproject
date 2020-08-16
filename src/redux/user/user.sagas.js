@@ -6,6 +6,7 @@ import { setCurrentUser } from './user.actions';
 import { toast } from 'react-toastify';
 import { setItemsLocally, clearAllItemsLocally } from '../cart/cart.actions';
 import { selectAreCollectionsInitialized, selectCollectionsAsArray } from '../shop/shop.selectors';
+import { requestShopDataUpdatesFromFirestore } from '../shop/shop.actions';
 
 const showToastError = errorCode => {
     switch(errorCode){
@@ -138,9 +139,10 @@ function* handleSetCurrentUserAction({payload: currentUser}){
     if(currentUser){
         const userItemsDataFromDb = yield firestoreUtils.retrieveUserItemsFromDbCart(currentUser.id);
         let areCollectionsInitilized = yield select(selectAreCollectionsInitialized);
+        if(!areCollectionsInitilized) yield put(requestShopDataUpdatesFromFirestore());
         const sleep = (millis) => new Promise(_ => setTimeout(_, millis));
         while(!areCollectionsInitilized){
-            sleep(500);
+            yield sleep(500);
             areCollectionsInitilized = yield select(selectAreCollectionsInitialized);
         }
         const collections = yield select(selectCollectionsAsArray);
