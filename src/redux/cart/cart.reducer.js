@@ -22,7 +22,7 @@ const cartReducer = (state = initialState, action ) => {
         case cartActionTypes.REMOVE_ITEM_LOCALLY:
             items = removeItemFromCartItems(state.items, action.payload);
             return { ...state, items };
-        case cartActionTypes.CLEAR_ITEM:
+        case cartActionTypes.CLEAR_ITEM_LOCALLY:
             items = clearItemFromCartItems(state.items, action.payload);
             return { ...state, items };
         case cartActionTypes.CLEAR_ALL_ITEMS:

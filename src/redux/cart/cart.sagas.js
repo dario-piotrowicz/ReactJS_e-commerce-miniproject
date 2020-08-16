@@ -1,6 +1,6 @@
 import { takeEvery, call, put, all, select } from 'redux-saga/effects';
 import { firestoreUtils } from '../../firebase/firebase.utils';
-import { addItemLocally, removeItemLocally } from './cart.actions';
+import { addItemLocally, removeItemLocally, clearItemLocally } from './cart.actions';
 import cartActionTypes from './cart.types';
 import { selectCurrentUser } from '../user/user.selectors';
 import { toast } from 'react-toastify';
@@ -34,6 +34,19 @@ function* handleRemoveItemAction({ payload: item }){
 }
 
 
+function* handleClearItemAction({ payload: item }){
+  const currentUser = yield select(selectCurrentUser);
+
+  try {
+    yield firestoreUtils.clearItemFromDbCart(currentUser.id, item.id);
+  }catch(error){
+    toast.error('An error has occurred and your item cannot be removed from the cart at this moment. Please try again later');
+    return;
+  }
+
+  yield put((clearItemLocally(item)));
+}
+
 export function* addItem(){
   yield takeEvery(cartActionTypes.ADD_ITEM, handleAddItemAction);
 }
@@ -42,9 +55,15 @@ export function* removeItem(){
   yield takeEvery(cartActionTypes.REMOVE_ITEM, handleRemoveItemAction);
 }
 
+export function* clearItem(){
+  yield takeEvery(cartActionTypes.CLEAR_ITEM, handleClearItemAction);
+}
+
+
 export default function* cartSagas(){
   yield all([
       call(addItem),
-      call(removeItem)
+      call(removeItem),
+      call(clearItem)
   ]);
 }

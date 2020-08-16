@@ -142,6 +142,21 @@ export const firestoreUtils = {
             });
         }
     },
+    clearItemFromDbCart: async (userId, itemId) => {
+        const docId = `${userId}_${itemId}`;
+        const docRef = firestore.doc(`cartItems/${docId}`);
+
+        userId = userId.trim();
+
+        if(!userId) throw new Error('userId not provided');
+        if(!itemId) throw new Error('itemId not provided');
+
+        const docSnap = await docRef.get();
+
+        if(!docSnap.exists) throw new Error('could not find item to remove in firestore');
+
+        docRef.delete();
+    },
 };
 
 export default firebase;
