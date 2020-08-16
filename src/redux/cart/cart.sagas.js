@@ -26,7 +26,7 @@ function* handleRemoveItemAction({ payload: item }){
   try {
     yield firestoreUtils.removeItemFromDbCart(currentUser.id, item.id);
   }catch(error){
-    toast.error('A network error has occurred and your item cannot be removed from the cart at this moment. Please try again later');
+    toast.error('An error has occurred and your item cannot be removed from the cart at this moment. Please try again later');
     return;
   }
 
