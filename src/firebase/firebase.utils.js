@@ -48,81 +48,84 @@ const getDocRefForCartItem = (userId, itemId) => {
     return docRef;
 };
 
-export const firestoreUtils = {
-    createUserDoc : async (userAuth, additionalInfo) => {
-        if(!userAuth) return;
+const createUserDoc = async (userAuth, additionalInfo) => {
+    if(!userAuth) return;
 
-        const docRef = firestore.doc(`users/${userAuth.uid}`);
-        const docSnap = await docRef.get();
-        if(docSnap.exists){
-            docRef.get(); // I'm calling get() in order to trigger an onSnapshot for the docRef
-            return docRef;
-        }
+    const docRef = firestore.doc(`users/${userAuth.uid}`);
+    const docSnap = await docRef.get();
+    if(docSnap.exists){
+        docRef.get(); // I'm calling get() in order to trigger an onSnapshot for the docRef
+        return docRef;
+    }
 
-        const { displayName, email } = userAuth;
-        try {
-            await docRef.set({
-                            displayName,
-                            email,
-                            createdAt: new Date(),
-                            ...additionalInfo
-            });
-            return docRef;
-        } catch(error) {
-            console.error('error in creating user', error.message);
-            return null;
-        }
-    },
-    addMessageToDb : async (userId, title, message) => {
-        const docId = `${ (new Date()).toISOString()}_${userId}`;
-        const docRef = firestore.doc(`messages/${docId}`);
-
-        userId = userId.trim();
-        title = title.trim();
-        message = message.trim();
-
-        if(!userId) throw new Error('userId not provided');
-        if(!title) throw new Error('title not provided');
-        if(!message) throw new Error('message not provided');
-
+    const { displayName, email } = userAuth;
+    try {
         await docRef.set({
-                        userId,
-                        title,
-                        message
+                        displayName,
+                        email,
+                        createdAt: new Date(),
+                        ...additionalInfo
         });
-    },
-    retrieveUserItemsFromDbCart: async (userId) => {
-        const userItems = [];
-        const querySnap = await firestore.collection('cartItems').where("userId", "==", userId).get();
+        return docRef;
+    } catch(error) {
+        console.error('error in creating user', error.message);
+        return null;
+    }
+};
 
-        querySnap.forEach(function(doc) {
-            userItems.push(doc.data());
-        });
+const addMessageToDb = async (userId, title, message) => {
+    const docId = `${ (new Date()).toISOString()}_${userId}`;
+    const docRef = firestore.doc(`messages/${docId}`);
 
-        return userItems;
-    },
-    addItemToDbCart: async (userId, itemId) => {
-        const docRef =  getDocRefForCartItem(userId,itemId);
+    userId = userId.trim();
+    title = title.trim();
+    message = message.trim();
 
-        let currentQuantity = 0;
+    if(!userId) throw new Error('userId not provided');
+    if(!title) throw new Error('title not provided');
+    if(!message) throw new Error('message not provided');
 
-        let docSnap = null;
-        try{ docSnap = await docRef.get(); }catch(error){docSnap = null;}
+    await docRef.set({
+            userId,
+            title,
+            message
+    });
+};
 
-        if(docSnap && docSnap.exists){
-            const docData = docSnap.data();
-            currentQuantity = parseInt(docData.quantity);
-        }
+const retrieveUserItemsFromDbCart = async (userId) => {
+    const userItems = [];
+    const querySnap = await firestore.collection('cartItems').where("userId", "==", userId).get();
 
-        const quantity = currentQuantity + 1;
+    querySnap.forEach(function(doc) {
+        userItems.push(doc.data());
+    });
 
-        await docRef.set({
-                userId,
-                itemId,
-                quantity
-        });
-    },
-    removeItemFromDbCart: async (userId, itemId) => {
+    return userItems;
+};
+
+const addItemToDbCart = async (userId, itemId) => {
+    const docRef =  getDocRefForCartItem(userId,itemId);
+
+    let currentQuantity = 0;
+
+    let docSnap = null;
+    try{ docSnap = await docRef.get(); }catch(error){docSnap = null;}
+
+    if(docSnap && docSnap.exists){
+        const docData = docSnap.data();
+        currentQuantity = parseInt(docData.quantity);
+    }
+
+    const quantity = currentQuantity + 1;
+
+    await docRef.set({
+            userId,
+            itemId,
+            quantity
+    });
+};
+
+const removeItemFromDbCart = async (userId, itemId) => {
         const docRef =  getDocRefForCartItem(userId,itemId);
 
         const docSnap = await docRef.get();
@@ -143,23 +146,34 @@ export const firestoreUtils = {
                     quantity
             });
         }
-    },
-    clearItemFromDbCart: async (userId, itemId) => {
-        const docRef =  getDocRefForCartItem(userId,itemId);
+};
 
-        const docSnap = await docRef.get();
+const clearItemFromDbCart = async (userId, itemId) => {
+    const docRef =  getDocRefForCartItem(userId,itemId);
 
-        if(!docSnap.exists) throw new Error('could not find item to remove in firestore');
+    const docSnap = await docRef.get();
 
-        await docRef.delete();
-    },
-    clearAllItemsFromDbCart: async (userId) => {
+    if(!docSnap.exists) throw new Error('could not find item to remove in firestore');
+
+    await docRef.delete();
+};
+
+const clearAllItemsFromDbCart = async (userId) => {
         const querySnap = await firestore.collection('cartItems').where("userId", "==", userId).get();
 
         querySnap.forEach(function(doc) {
             doc.ref.delete();
         });
-    },
+};
+
+export const firestoreUtils = {
+    createUserDoc,
+    addMessageToDb,
+    retrieveUserItemsFromDbCart,
+    addItemToDbCart,
+    removeItemFromDbCart,
+    clearItemFromDbCart,
+    clearAllItemsFromDbCart
 };
 
 export default firebase;
