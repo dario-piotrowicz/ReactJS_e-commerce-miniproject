@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { setItemsLocally, clearAllItemsLocally } from '../cart/cart.actions';
 import { selectAreCollectionsInitialized, selectCollectionsAsArray } from '../shop/shop.selectors';
 import { requestShopDataUpdatesFromFirestore } from '../shop/shop.actions';
+import { getItemFromCollectionsBasedOnId } from '../shop/shop.utils';
 
 const showToastError = errorCode => {
     switch(errorCode){
@@ -120,20 +121,6 @@ function* handleSignInAction({ payload: options }){
         return;
     }
 }
-
-const getItemFromCollectionsBasedOnId = (collectionsArray, itemId) => {
-    for(let collectionIdx = 0; collectionIdx < collectionsArray.length; collectionIdx++){
-        const collection = collectionsArray[collectionIdx];
-        const collectionItems = collection && collection.items ? collection.items : [];
-        for(let itemIdx = 0; itemIdx < collectionItems.length ; itemIdx++){
-            const collectionItem = collectionItems[itemIdx];
-            if(collectionItem && collectionItem.id === itemId){
-                return collectionItem;
-            }
-        }
-    }
-    return null;
-};
 
 function* handleSetCurrentUserAction({payload: currentUser}){
     if(currentUser){

@@ -27,3 +27,17 @@ export const convertBasicShopDataArrayToShopDataMap = shopDataArray => {
 
     return convertArrayToCollections(newShopDataArray);
 };
+
+export const getItemFromCollectionsBasedOnId = (collectionsArray, itemId) => {
+    for(let collectionIdx = 0; collectionIdx < collectionsArray.length; collectionIdx++){
+        const collection = collectionsArray[collectionIdx];
+        const collectionItems = collection && collection.items ? collection.items : [];
+        for(let itemIdx = 0; itemIdx < collectionItems.length ; itemIdx++){
+            const collectionItem = collectionItems[itemIdx];
+            if(collectionItem && collectionItem.id === itemId){
+                return collectionItem;
+            }
+        }
+    }
+    return null;
+};
