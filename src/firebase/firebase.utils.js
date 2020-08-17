@@ -36,6 +36,18 @@ export const addCollectionWithDocumentsToFirestore = async (collectionName, docs
     return await batch.commit();
 }
 
+const getDocRefForCartItem = (userId, itemId) => {
+    userId = userId.trim();
+
+    if(!userId) throw new Error('userId not provided');
+    if(!itemId) throw new Error('itemId not provided');
+
+    const docId = `${userId}_${itemId}`;
+    const docRef = firestore.doc(`cartItems/${docId}`);
+
+    return docRef;
+};
+
 export const firestoreUtils = {
     createUserDoc : async (userAuth, additionalInfo) => {
         if(!userAuth) return;
@@ -90,13 +102,7 @@ export const firestoreUtils = {
         return userItems;
     },
     addItemToDbCart: async (userId, itemId) => {
-        const docId = `${userId}_${itemId}`;
-        const docRef = firestore.doc(`cartItems/${docId}`);
-
-        userId = userId.trim();
-
-        if(!userId) throw new Error('userId not provided');
-        if(!itemId) throw new Error('itemId not provided');
+        const docRef =  getDocRefForCartItem(userId,itemId);
 
         let currentQuantity = 0;
 
@@ -111,19 +117,13 @@ export const firestoreUtils = {
         const quantity = currentQuantity + 1;
 
         await docRef.set({
-                        userId,
-                        itemId,
-                        quantity
+                userId,
+                itemId,
+                quantity
         });
     },
     removeItemFromDbCart: async (userId, itemId) => {
-        const docId = `${userId}_${itemId}`;
-        const docRef = firestore.doc(`cartItems/${docId}`);
-
-        userId = userId.trim();
-
-        if(!userId) throw new Error('userId not provided');
-        if(!itemId) throw new Error('itemId not provided');
+        const docRef =  getDocRefForCartItem(userId,itemId);
 
         const docSnap = await docRef.get();
 
@@ -135,29 +135,23 @@ export const firestoreUtils = {
         const quantity = currentQuantity - 1;
 
         if(quantity===0){
-            docRef.delete();
+            await docRef.delete();
         } else {
             await docRef.set({
-                            userId,
-                            itemId,
-                            quantity
+                    userId,
+                    itemId,
+                    quantity
             });
         }
     },
     clearItemFromDbCart: async (userId, itemId) => {
-        const docId = `${userId}_${itemId}`;
-        const docRef = firestore.doc(`cartItems/${docId}`);
-
-        userId = userId.trim();
-
-        if(!userId) throw new Error('userId not provided');
-        if(!itemId) throw new Error('itemId not provided');
+        const docRef =  getDocRefForCartItem(userId,itemId);
 
         const docSnap = await docRef.get();
 
         if(!docSnap.exists) throw new Error('could not find item to remove in firestore');
 
-        docRef.delete();
+        await docRef.delete();
     },
     clearAllItemsFromDbCart: async (userId) => {
         const querySnap = await firestore.collection('cartItems').where("userId", "==", userId).get();
