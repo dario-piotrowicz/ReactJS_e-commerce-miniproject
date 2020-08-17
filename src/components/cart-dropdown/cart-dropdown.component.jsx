@@ -51,7 +51,7 @@ const CartDropdown = () => {
                }
             </>
         }
-        <CustomButton onClick={goToCheckout} disabled={ goToCheckoutButtonDisabled ? true : false}>
+        <CustomButton onClick={goToCheckout} disabled={goToCheckoutButtonDisabled ? true : false}>
             Go To Checkout
         </CustomButton>
     </div>

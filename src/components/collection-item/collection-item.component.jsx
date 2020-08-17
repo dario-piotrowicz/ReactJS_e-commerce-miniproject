@@ -33,7 +33,7 @@ const CollectionItem = ({ item }) => {
             <span className="name">{name}</span>
             <span className="price">${price}</span>
         </div>
-        <CustomButton onClick={addItemToCart} invertedColors disabled={ addButtonDisabled ? true : false}>
+        <CustomButton onClick={addItemToCart} invertedColors disabled={addButtonDisabled ? true : false}>
             Add To Cart
         </CustomButton>
     </div>
