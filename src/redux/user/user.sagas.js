@@ -1,9 +1,13 @@
-import { take, takeEvery, call, put, all } from 'redux-saga/effects';
+import { take, takeEvery, call, put, all, select } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import { auth, firestoreUtils, signInWithGoogle } from '../../firebase/firebase.utils';
 import userActionTypes from './user.types';
 import { setCurrentUser } from './user.actions';
 import { toast } from 'react-toastify';
+import { setItemsLocally, clearAllItemsLocally } from '../cart/cart.actions';
+import { selectAreCollectionsInitialized, selectCollectionsAsArray } from '../shop/shop.selectors';
+import { requestShopDataUpdatesFromFirestore } from '../shop/shop.actions';
+import { getItemFromCollectionsBasedOnId } from '../shop/shop.utils';
 
 const showToastError = errorCode => {
     switch(errorCode){
@@ -118,6 +122,31 @@ function* handleSignInAction({ payload: options }){
     }
 }
 
+function* handleSetCurrentUserAction({payload: currentUser}){
+    if(currentUser){
+        const userItemsDataFromDb = yield firestoreUtils.retrieveUserItemsFromDbCart(currentUser.id);
+        let areCollectionsInitilized = yield select(selectAreCollectionsInitialized);
+        if(!areCollectionsInitilized) yield put(requestShopDataUpdatesFromFirestore());
+        const sleep = (millis) => new Promise(_ => setTimeout(_, millis));
+        while(!areCollectionsInitilized){
+            yield sleep(500);
+            areCollectionsInitilized = yield select(selectAreCollectionsInitialized);
+        }
+        const collections = yield select(selectCollectionsAsArray);
+        const userItems = userItemsDataFromDb.map(
+            dataItem => ({
+                ...getItemFromCollectionsBasedOnId(collections,dataItem.itemId),
+                quantity: dataItem.quantity
+            })
+        ).filter(
+            item => !!item || item.quantity < 0
+        );
+        yield put(setItemsLocally(userItems));
+    } else {
+        yield put(clearAllItemsLocally());
+    }
+}
+
 export function* signIn(){
     yield takeEvery(userActionTypes.SIGN_IN, handleSignInAction);
 }
@@ -127,11 +156,17 @@ export function* signOut(){
     yield auth.signOut();
 }
 
+export function* setCurrentUserSaga() {
+    yield takeEvery(userActionTypes.SET_CURRENT_USER, handleSetCurrentUserAction);
+}
+
+
 export default function* userSagas(){
     yield all([
         call(requestUserFromFirebase),
         call(signUp),
         call(signIn),
-        call(signOut)
+        call(signOut),
+        call(setCurrentUserSaga)
     ]);
 }

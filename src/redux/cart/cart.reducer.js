@@ -2,14 +2,6 @@ import cartActionTypes from './cart.types';
 import { addItemToCartItems,
          removeItemFromCartItems,
          clearItemFromCartItems } from './cart.utils';
-import { persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-
-const persistConfig = {
-    key: 'cart',
-    storage,
-    blacklist: ['headerDropdownHidden']
-};
 
 const initialState = {
     headerDropdownHidden: true,
@@ -24,20 +16,22 @@ const cartReducer = (state = initialState, action ) => {
                 ...state,
                 headerDropdownHidden: !state.headerDropdownHidden
             };
-        case cartActionTypes.ADD_ITEM:
+        case cartActionTypes.ADD_ITEM_LOCALLY:
             items = addItemToCartItems(state.items, action.payload);
             return { ...state, items };
-        case cartActionTypes.REMOVE_ITEM:
+        case cartActionTypes.REMOVE_ITEM_LOCALLY:
             items = removeItemFromCartItems(state.items, action.payload);
             return { ...state, items };
-        case cartActionTypes.CLEAR_ITEM:
+        case cartActionTypes.CLEAR_ITEM_LOCALLY:
             items = clearItemFromCartItems(state.items, action.payload);
             return { ...state, items };
-        case cartActionTypes.CLEAR_ALL_ITEMS:
-            return { ...state, items: [] };
+        case cartActionTypes.SET_ITEMS_LOCALLY:
+            return { ...state, items: action.payload};
+        case cartActionTypes.CLEAR_ALL_ITEMS_LOCALLY:
+                return { ...state, items: []};
         default:
             return state;
     }
 }
 
-export default persistReducer(persistConfig, cartReducer);
+export default cartReducer;
