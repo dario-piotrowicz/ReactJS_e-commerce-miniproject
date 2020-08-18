@@ -15,7 +15,7 @@ Furthermore I did and plan on doing extra personal bits of work on the project, 
 
 The application is implemented using ReacJS, it's been created using the [Create-React-App](https://github.com/facebook/create-react-app) tool and:
 - uses the [React Router](https://github.com/ReactTraining/react-router) (Dom) to implement pages routing
-- uses [Firebase](https://firebase.google.com/) it implements authentication methods and data retrival
+- uses [Firebase](https://firebase.google.com/) it implements authentication methods and data retrival (if you want to check the security rules set in firestore check the [security rules file](FIRESTORE_SECURITY_RULES.md))
 - manages its local state using the [Redux](https://redux.js.org/) library
  (enhanced with [Redux-Saga](https://github.com/redux-saga/redux-saga))
 - processes (test) payments via the [Stripe](https://stripe.com/gb) plaftorm \
