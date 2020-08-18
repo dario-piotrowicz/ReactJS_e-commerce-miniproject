@@ -126,26 +126,26 @@ const addItemToDbCart = async (userId, itemId) => {
 };
 
 const removeItemFromDbCart = async (userId, itemId) => {
-        const docRef =  getDocRefForCartItem(userId,itemId);
+    const docRef =  getDocRefForCartItem(userId,itemId);
 
-        const docSnap = await docRef.get();
+    const docSnap = await docRef.get();
 
-        if(!docSnap.exists) throw new Error('could not find item to remove in firestore');
+    if(!docSnap.exists) throw new Error('could not find item to remove in firestore');
 
-        const docData = docSnap.data();
-        const currentQuantity = parseInt(docData.quantity);
+    const docData = docSnap.data();
+    const currentQuantity = parseInt(docData.quantity);
 
-        const quantity = currentQuantity - 1;
+    const quantity = currentQuantity - 1;
 
-        if(quantity===0){
-            await docRef.delete();
-        } else {
-            await docRef.set({
-                    userId,
-                    itemId,
-                    quantity
-            });
-        }
+    if(quantity===0){
+        await docRef.delete();
+    } else {
+        await docRef.set({
+                userId,
+                itemId,
+                quantity
+        });
+    }
 };
 
 const clearItemFromDbCart = async (userId, itemId) => {
@@ -159,11 +159,11 @@ const clearItemFromDbCart = async (userId, itemId) => {
 };
 
 const clearAllItemsFromDbCart = async (userId) => {
-        const querySnap = await firestore.collection('cartItems').where("userId", "==", userId).get();
+    const querySnap = await firestore.collection('cartItems').where("userId", "==", userId).get();
 
-        querySnap.forEach(function(doc) {
-            doc.ref.delete();
-        });
+    querySnap.forEach(function(doc) {
+        doc.ref.delete();
+    });
 };
 
 export const firestoreUtils = {
