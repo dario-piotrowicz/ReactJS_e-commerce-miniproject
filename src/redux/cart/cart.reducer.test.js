@@ -1,5 +1,5 @@
 import cartReducer from './cart.reducer';
-import { toggleHeaderDropdownHidden, addItem, removeItem, clearItem, clearAllItems } from './cart.actions';
+import { toggleHeaderDropdownHidden, addItemLocally, removeItemLocally, clearItemLocally, clearAllItemsLocally } from './cart.actions';
 
 const initialState = {
     headerDropdownHidden: true,
@@ -63,21 +63,21 @@ describe('Cart Reducer', () => {
     });
 
 
-    it( 'should update the itmes array accordingly on addItem' , () => {
-        let updatedState = cartReducerWithNoState(addItem(blueJacket));
+    it( 'should update the itmes array accordingly on addItemLocally' , () => {
+        let updatedState = cartReducerWithNoState(addItemLocally(blueJacket));
         expect(updatedState.items).toEqual([blueJacket]);
 
-        updatedState = cartReducer(updatedState,addItem(timberlands));
+        updatedState = cartReducer(updatedState,addItemLocally(timberlands));
         expect(updatedState.items).toEqual([blueJacket, timberlands]);
 
-        updatedState = cartReducer(updatedState,addItem(blueJacket));
+        updatedState = cartReducer(updatedState,addItemLocally(blueJacket));
         expect(updatedState.items).toEqual([
             { ...blueJacket, quantity: 2 },
             timberlands
         ]);
 
-        updatedState = cartReducer(updatedState,addItem(timberlands));
-        updatedState = cartReducer(updatedState,addItem(timberlands));
+        updatedState = cartReducer(updatedState,addItemLocally(timberlands));
+        updatedState = cartReducer(updatedState,addItemLocally(timberlands));
         expect(updatedState.items).toEqual([
             { ...blueJacket, quantity: 2 },
             { ...timberlands, quantity: 3 }
@@ -85,29 +85,29 @@ describe('Cart Reducer', () => {
     });
 
 
-    it( 'should update the itmes array accordingly on removeItem' , () => {
+    it( 'should update the itmes array accordingly on removeItemLocally' , () => {
         initialState.items = [
             { ...blueJacket , quantity: 5 },
             { ...timberlands },
             { ...pinkTshirt , quantity: 3 }
         ];
 
-        let updatedState = cartReducer(initialState,removeItem(blueJacket));
+        let updatedState = cartReducer(initialState,removeItemLocally(blueJacket));
         expect(updatedState.items).toEqual([
             { ...blueJacket , quantity: 4 },
             { ...timberlands },
             { ...pinkTshirt , quantity: 3 }
         ]);
 
-        updatedState = cartReducer(updatedState,removeItem(pinkTshirt));
-        updatedState = cartReducer(updatedState,removeItem(pinkTshirt));
+        updatedState = cartReducer(updatedState,removeItemLocally(pinkTshirt));
+        updatedState = cartReducer(updatedState,removeItemLocally(pinkTshirt));
         expect(updatedState.items).toEqual([
             { ...blueJacket , quantity: 4 },
             { ...timberlands },
             { ...pinkTshirt }
         ]);
 
-        updatedState = cartReducer(updatedState,removeItem(timberlands));
+        updatedState = cartReducer(updatedState,removeItemLocally(timberlands));
         expect(updatedState.items).toEqual([
             { ...blueJacket , quantity: 4 },
             { ...pinkTshirt }
@@ -115,49 +115,49 @@ describe('Cart Reducer', () => {
     });
 
 
-    it( 'should update the itmes array accordingly on clearItem' , () => {
+    it( 'should update the itmes array accordingly on clearItemLocally' , () => {
         initialState.items = [
             { ...blueJacket , quantity: 7 },
             { ...pinkTshirt , quantity: 3 },
             { ...timberlands, quantity: 5 }
         ];
 
-        let updatedState = cartReducer(initialState,clearItem(pinkTshirt));
+        let updatedState = cartReducer(initialState,clearItemLocally(pinkTshirt));
         expect(updatedState.items).toEqual([
             { ...blueJacket , quantity: 7 },
             { ...timberlands, quantity: 5 }
         ]);
 
-        updatedState = cartReducer(updatedState,clearItem(pinkTshirt));
+        updatedState = cartReducer(updatedState,clearItemLocally(pinkTshirt));
         expect(updatedState.items).toEqual([
             { ...blueJacket , quantity: 7 },
             { ...timberlands, quantity: 5 }
         ]);
 
-        updatedState = cartReducer(updatedState,clearItem(timberlands));
+        updatedState = cartReducer(updatedState,clearItemLocally(timberlands));
         expect(updatedState.items).toEqual([
             { ...blueJacket , quantity: 7 }
         ]);
 
-        updatedState = cartReducer(updatedState,clearItem(blueJacket));
+        updatedState = cartReducer(updatedState,clearItemLocally(blueJacket));
         expect(updatedState.items).toEqual([]);
 
-        updatedState = cartReducer(updatedState,clearItem(timberlands));
+        updatedState = cartReducer(updatedState,clearItemLocally(timberlands));
         expect(updatedState.items).toEqual([]);
     });
 
 
-    it( 'should update the state on clearAllItems' , () => {
+    it( 'should update the state on clearAllItemsLocally' , () => {
         initialState.items = [
             { ...blueJacket , quantity: 7 },
             { ...pinkTshirt , quantity: 3 },
             { ...timberlands, quantity: 5 }
         ];
 
-        let updatedState = cartReducer(initialState,clearAllItems());
+        let updatedState = cartReducer(initialState,clearAllItemsLocally());
         expect(updatedState.items).toEqual([]);
 
-        updatedState = cartReducer(updatedState,clearAllItems());
+        updatedState = cartReducer(updatedState,clearAllItemsLocally());
         expect(updatedState.items).toEqual([]);
     });
 
