@@ -56,10 +56,10 @@ export function* clearItem(){
 
 export function* clearAllItems(){
   while( true ){
-    const { payload: item } = yield take(cartActionTypes.CLEAR_ALL_ITEMS);
+    yield take(cartActionTypes.CLEAR_ALL_ITEMS);
     yield handleDbAction(
       firestoreUtils.clearAllItemsFromDbCart,
-      item.id,
+      -1,
       'An error has occurred and your cart could not be cleared at this moment. Please try again later',
       clearAllItemsLocally()
     );
