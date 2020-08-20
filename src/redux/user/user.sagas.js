@@ -153,6 +153,7 @@ export function* signIn(){
 
 export function* signOut(){
     yield take(userActionTypes.SIGN_OUT);
+    if(unsubscribeFromUserRefOnSnap) yield unsubscribeFromUserRefOnSnap();
     yield auth.signOut();
 }
 
