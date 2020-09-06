@@ -53,7 +53,7 @@ Follow some screenshots of the application:
 
 ## Deployment
 The application is deployed on the [Heroku](https://www.heroku.com/) platfrom and can be accessed via the following link:\
-[ecomm-miniprojeect.herokuapp.com](https://ecomm-miniproject.herokuapp.com/).
+[ecomm-miniproject.herokuapp.com](https://ecomm-miniproject.herokuapp.com/).
 
 
 
